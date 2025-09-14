@@ -680,6 +680,13 @@
         let currentConfirmationNumber = '';
         let currentLanguage = 'en';
         
+        // Store agency info globally
+        let agencyInfo = {
+            agencyName: '',
+            agentName: '',
+            agentEmail: ''
+        };
+        
         // Language translations
         const translations = {
             en: {
@@ -858,8 +865,9 @@
                 'amount': 'amountPaid'
             };
             
-            // UPDATE HEADER AND FOOTER WITH AGENCY INFO IF PROVIDED
+            // CRITICAL FIX: Store agency info in hidden fields AND global object
             if (params.agencyName) {
+                agencyInfo.agencyName = params.agencyName;
                 document.getElementById('agencyName').value = params.agencyName;
                 // Update header with agency name
                 document.getElementById('agencyHeader').textContent = params.agencyName;
@@ -876,16 +884,18 @@
             
             // Show agent info if provided
             if (params.agentName) {
+                agencyInfo.agentName = params.agentName;
                 document.getElementById('agentName').value = params.agentName;
                 document.getElementById('agentNameDisplay').textContent = params.agentName;
                 document.getElementById('agentInfoDisplay').style.display = 'block';
-                
-                if (params.agentEmail) {
-                    document.getElementById('agentEmail').value = params.agentEmail;
+            }
+            
+            if (params.agentEmail) {
+                agencyInfo.agentEmail = params.agentEmail;
+                document.getElementById('agentEmail').value = params.agentEmail;
+                if (params.agentName) {
                     document.getElementById('agentEmailDisplay').textContent = params.agentEmail;
                 }
-            } else if (params.agentEmail) {
-                document.getElementById('agentEmail').value = params.agentEmail;
             }
             
             // Fill in the form fields based on URL parameters
@@ -993,7 +1003,7 @@
             signaturePad.clear();
         }
         
-        // Handle form submission
+        // Handle form submission - CRITICAL FIX HERE
         document.getElementById('noLossForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1022,6 +1032,17 @@
             // Set confirmation number in hidden field
             document.getElementById('confirmationNumber').value = currentConfirmationNumber;
             
+            // CRITICAL FIX: Ensure agency info is in the hidden fields before submission
+            if (agencyInfo.agencyName) {
+                document.getElementById('agencyName').value = agencyInfo.agencyName;
+            }
+            if (agencyInfo.agentName) {
+                document.getElementById('agentName').value = agencyInfo.agentName;
+            }
+            if (agencyInfo.agentEmail) {
+                document.getElementById('agentEmail').value = agencyInfo.agentEmail;
+            }
+            
             // Show loading
             document.getElementById('loading').style.display = 'block';
             document.getElementById('submitBtn').disabled = true;
@@ -1031,7 +1052,13 @@
             // Prepare form data
             const formData = new FormData(this);
             formData.append('submissionDate', new Date().toLocaleString());
-            // The confirmation number and agency info are already in the form data via hidden fields
+            
+            // DEBUG: Log what we're sending
+            console.log('Sending agency info:', {
+                agencyName: formData.get('agencyName'),
+                agentName: formData.get('agentName'),
+                agentEmail: formData.get('agentEmail')
+            });
             
             try {
                 const response = await fetch(SCRIPT_URL, {
