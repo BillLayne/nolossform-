@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Loss Statement - Bill Layne Insurance Agency</title>
+    <title>Statement of No Loss</title>
     <style>
         * {
             margin: 0;
@@ -83,6 +83,14 @@
         .header p {
             font-size: 14px;
             opacity: 0.9;
+        }
+        
+        .agent-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 13px;
         }
         
         .form-container {
@@ -484,9 +492,15 @@
                 <button class="lang-btn active" onclick="setLanguage('en', event)">English</button>
                 <button class="lang-btn" onclick="setLanguage('es', event)">Español</button>
             </div>
-            <h1>Bill Layne Insurance Agency</h1>
+            <!-- Dynamic Agency Name - Will be updated by JavaScript -->
+            <h1 id="agencyHeader">Bill Layne Insurance Agency</h1>
             <h2 data-lang="header-title">Statement of No Loss</h2>
             <p data-lang="header-subtitle">Electronic Signature Authorization</p>
+            <!-- Agent info section - will be shown if agent info provided -->
+            <div id="agentInfoDisplay" class="agent-info" style="display: none;">
+                <strong>Your Agent:</strong> <span id="agentNameDisplay"></span><br>
+                <span id="agentEmailDisplay"></span>
+            </div>
         </div>
         
         <form id="noLossForm" class="form-container">
@@ -623,12 +637,15 @@
             </button>
         </form>
         
-        <div class="footer">
+        <div class="footer" id="footerInfo">
             <p>
-                Bill Layne Insurance Agency<br>
-                1283 N Bridge St, Elkin NC 28621<br>
+                <span id="footerAgencyName">Bill Layne Insurance Agency</span><br>
+                <span id="footerContact">1283 N Bridge St, Elkin NC 28621<br>
                 📞 336-835-1993 | ✉️ Save@BillLayneInsurance.com<br>
-                🌐 www.BillLayneInsurance.com
+                🌐 www.BillLayneInsurance.com</span>
+            </p>
+            <p style="margin-top: 10px; font-size: 11px; color: #999;">
+                Powered by NoLossForm.com
             </p>
         </div>
     </div>
@@ -841,14 +858,33 @@
                 'amount': 'amountPaid'
             };
             
-            // Store agency information in hidden fields if provided
+            // UPDATE HEADER AND FOOTER WITH AGENCY INFO IF PROVIDED
             if (params.agencyName) {
                 document.getElementById('agencyName').value = params.agencyName;
+                // Update header with agency name
+                document.getElementById('agencyHeader').textContent = params.agencyName;
+                // Update footer with agency name
+                document.getElementById('footerAgencyName').textContent = params.agencyName;
+                
+                // If not Bill Layne Insurance, show "Powered by" message more prominently
+                if (params.agencyName !== 'Bill Layne Insurance Agency') {
+                    document.getElementById('footerContact').innerHTML = 
+                        `Contact your agent for assistance<br>
+                        <span style="font-size: 11px;">Form processing provided by NoLossForm.com</span>`;
+                }
             }
+            
+            // Show agent info if provided
             if (params.agentName) {
                 document.getElementById('agentName').value = params.agentName;
-            }
-            if (params.agentEmail) {
+                document.getElementById('agentNameDisplay').textContent = params.agentName;
+                document.getElementById('agentInfoDisplay').style.display = 'block';
+                
+                if (params.agentEmail) {
+                    document.getElementById('agentEmail').value = params.agentEmail;
+                    document.getElementById('agentEmailDisplay').textContent = params.agentEmail;
+                }
+            } else if (params.agentEmail) {
                 document.getElementById('agentEmail').value = params.agentEmail;
             }
             
