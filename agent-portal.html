@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Portal - NoLossForm.com</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .portal-container {
+            padding: 40px 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #28a745;
+            color: white;
+            margin: 5px;
+        }
+        
+        .btn-secondary:hover {
+            background: #218838;
+        }
+        
+        .generated-section {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .generated-link {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            word-break: break-all;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+            border: 2px solid #e1e8ed;
+        }
+        
+        .template-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 2px solid #e1e8ed;
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e1e8ed;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .portal-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Agent Portal</h1>
+            <p>Generate Pre-filled Statement of No Loss Forms</p>
+        </div>
+        
+        <div class="portal-container">
+            <!-- Agent Information Section -->
+            <div class="section">
+                <h2>👤 Agent Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agentName">Your Name *</label>
+                        <input type="text" id="agentName" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agentEmail">Your Email *</label>
+                        <input type="email" id="agentEmail" placeholder="agent@agency.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agentId">Agent ID</label>
+                        <input type="text" id="agentId" placeholder="AGT-20250113-0001">
+                    </div>
+                    <div class="form-group">
+                        <label for="agencyId">Agency ID</label>
+                        <input type="text" id="agencyId" placeholder="AGC-20250113-0001">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Agency Branding Section -->
+            <div class="section">
+                <h2>🏢 Agency Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agencyName">Agency Name *</label>
+                        <input type="text" id="agencyName" placeholder="Bill Layne Insurance Agency" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agencyPhone">Agency Phone</label>
+                        <input type="tel" id="agencyPhone" placeholder="(336) 835-1993">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="agencyEmail">Agency Email</label>
+                        <input type="email" id="agencyEmail" placeholder="info@agency.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="agencyLogo">Logo URL (optional)</label>
+                        <input type="url" id="agencyLogo" placeholder="https://...">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customer Information Section -->
+            <div class="section">
+                <h2>📝 Customer Information (Pre-fill)</h2>
+                <div class="alert">
+                    Fill in any information you already have - customers can complete the rest
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name</label>
+                        <input type="text" id="customerName" placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Customer Email</label>
+                        <input type="email" id="customerEmail" placeholder="customer@email.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customerPhone">Customer Phone</label>
+                        <input type="tel" id="customerPhone" placeholder="(336) 555-1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="policyNumber">Policy Number</label>
+                        <input type="text" id="policyNumber" placeholder="POL123456">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="insuranceCompany">Insurance Company</label>
+                        <select id="insuranceCompany">
+                            <option value="">Select Company</option>
+                            <option value="Nationwide">Nationwide</option>
+                            <option value="Progressive">Progressive</option>
+                            <option value="National General">National General</option>
+                            <option value="Alamance">Alamance</option>
+                            <option value="Travelers">Travelers</option>
+                            <option value="Foremost">Foremost</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="policyType">Policy Type</label>
+                        <select id="policyType">
+                            <option value="">Select Type</option>
+                            <option value="Auto">Auto Insurance</option>
+                            <option value="Home">Homeowners Insurance</option>
+                            <option value="Renters">Renters Insurance</option>
+                            <option value="Life">Life Insurance</option>
+                            <option value="Business">Business Insurance</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="amountPaid">Reinstatement Amount</label>
+                    <input type="text" id="amountPaid" placeholder="$500.00">
+                </div>
+            </div>
+            
+            <!-- Generate Button -->
+            <button class="btn btn-primary" onclick="generateLink()">
+                🔗 Generate Pre-filled Link
+            </button>
+            
+            <!-- Generated Link Section -->
+            <div id="generatedSection" class="generated-section">
+                <h2>✅ Link Generated Successfully!</h2>
+                
+                <h3>Direct Link:</h3>
+                <div class="generated-link" id="generatedLink"></div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="copyLink()">📋 Copy Link</button>
+                    <button class="btn btn-secondary" onclick="testLink()">🔗 Test Link</button>
+                    <button class="btn btn-secondary" onclick="generateQR()">📱 Generate QR Code</button>
+                </div>
+                
+                <h3>Text Message Template:</h3>
+                <div class="template-box" id="textTemplate"></div>
+                <button class="btn btn-secondary" onclick="copyText()">📱 Copy Text Message</button>
+                
+                <h3>Email Template:</h3>
+                <div class="template-box" id="emailTemplate"></div>
+                <button class="btn btn-secondary" onclick="copyEmail()">📧 Copy Email</button>
+            </div>
+            
+            <!-- Stats Section -->
+            <div class="section" style="margin-top: 40px;">
+                <h2>📊 Your Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="linksSent">0</div>
+                        <div class="stat-label">Links Generated Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed">0</div>
+                        <div class="stat-label">Completed This Month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="conversionRate">0%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>NoLossForm.com - Automated Insurance Documentation<br>
+            © 2025 All Rights Reserved</p>
+        </div>
+    </div>
+    
+    <script>
+        // Base URL for the form
+        const BASE_URL = 'https://nolossform.com/form.html';
+        let currentLink = '';
+        let linksGenerated = 0;
+        
+        // Load saved agent data
+        function loadAgentData() {
+            const saved = localStorage.getItem('agentData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('agentName').value = data.agentName || '';
+                document.getElementById('agentEmail').value = data.agentEmail || '';
+                document.getElementById('agentId').value = data.agentId || '';
+                document.getElementById('agencyId').value = data.agencyId || '';
+                document.getElementById('agencyName').value = data.agencyName || '';
+                document.getElementById('agencyPhone').value = data.agencyPhone || '';
+                document.getElementById('agencyEmail').value = data.agencyEmail || '';
+                document.getElementById('agencyLogo').value = data.agencyLogo || '';
+            }
+            
+            // Load stats
+            const today = new Date().toDateString();
+            const statsKey = 'stats_' + today;
+            const stats = localStorage.getItem(statsKey);
+            if (stats) {
+                const data = JSON.parse(stats);
+                document.getElementById('linksSent').textContent = data.links || 0;
+                linksGenerated = data.links || 0;
+            }
+        }
+        
+        // Save agent data
+        function saveAgentData() {
+            const data = {
+                agentName: document.getElementById('agentName').value,
+                agentEmail: document.getElementById('agentEmail').value,
+                agentId: document.getElementById('agentId').value,
+                agencyId: document.getElementById('agencyId').value,
+                agencyName: document.getElementById('agencyName').value,
+                agencyPhone: document.getElementById('agencyPhone').value,
+                agencyEmail: document.getElementById('agencyEmail').value,
+                agencyLogo: document.getElementById('agencyLogo').value
+            };
+            localStorage.setItem('agentData', JSON.stringify(data));
+        }
+        
+        // Generate link
+        function generateLink() {
+            // Validate required fields
+            const agentName = document.getElementById('agentName').value;
+            const agentEmail = document.getElementById('agentEmail').value;
+            const agencyName = document.getElementById('agencyName').value;
+            
+            if (!agentName || !agentEmail || !agencyName) {
+                alert('Please fill in all required fields (Agent Name, Agent Email, Agency Name)');
+                return;
+            }
+            
+            // Save agent data
+            saveAgentData();
+            
+            // Build URL parameters
+            const params = new URLSearchParams();
+            
+            // Agency/Agent data
+            if (document.getElementById('agencyId').value) params.append('agencyId', document.getElementById('agencyId').value);
+            if (document.getElementById('agentId').value) params.append('agentId', document.getElementById('agentId').value);
+            params.append('agencyName', agencyName);
+            params.append('agentName', agentName);
+            params.append('agentEmail', agentEmail);
+            
+            if (document.getElementById('agencyPhone').value) params.append('agencyPhone', document.getElementById('agencyPhone').value);
+            if (document.getElementById('agencyEmail').value) params.append('agencyEmail', document.getElementById('agencyEmail').value);
+            if (document.getElementById('agencyLogo').value) params.append('logo', document.getElementById('agencyLogo').value);
+            
+            // Customer data
+            if (document.getElementById('customerName').value) params.append('customerName', document.getElementById('customerName').value);
+            if (document.getElementById('customerEmail').value) params.append('email', document.getElementById('customerEmail').value);
+            if (document.getElementById('customerPhone').value) params.append('phone', document.getElementById('customerPhone').value);
+            if (document.getElementById('policyNumber').value) params.append('policyNumber', document.getElementById('policyNumber').value);
+            if (document.getElementById('insuranceCompany').value) params.append('company', document.getElementById('insuranceCompany').value);
+            if (document.getElementById('policyType').value) params.append('policyType', document.getElementById('policyType').value);
+            if (document.getElementById('amountPaid').value) params.append('amount', document.getElementById('amountPaid').value);
+            
+            // Generate the link
+            currentLink = BASE_URL + '?' + params.toString();
+            
+            // Display link and templates
+            document.getElementById('generatedLink').textContent = currentLink;
+            document.getElementById('generatedSection').style.display = 'block';
+            
+            // Generate templates
+            const customerName = document.getElementById('customerName').value || '[Customer Name]';
+            const textTemplate = `Hi ${customerName},\n\n` +
+                `Please complete your Statement of No Loss form using this secure link:\n${currentLink}\n\n` +
+                `Your information has been pre-filled for convenience. Simply review, sign, and submit.\n\n` +
+                `Thank you,\n${agencyName}\n${document.getElementById('agencyPhone').value || ''}`;
+            
+            const emailTemplate = `Subject: Action Required - Statement of No Loss\n\n` +
+                `Dear ${customerName},\n\n` +
+                `Please complete your Statement of No Loss by clicking the secure link below:\n\n` +
+                `${currentLink}\n\n` +
+                `This form is required to reinstate your insurance policy. Your information has been pre-filled for your convenience.\n\n` +
+                `If you have any questions, please contact us at ${document.getElementById('agencyPhone').value || 'our office'}.\n\n` +
+                `Best regards,\n${agentName}\n${agencyName}`;
+            
+            document.getElementById('textTemplate').textContent = textTemplate;
+            document.getElementById('emailTemplate').textContent = emailTemplate;
+            
+            // Update stats
+            linksGenerated++;
+            document.getElementById('linksSent').textContent = linksGenerated;
+            
+            // Save stats
+            const today = new Date().toDateString();
+            const statsKey = 'stats_' + today;
+            localStorage.setItem(statsKey, JSON.stringify({ links: linksGenerated }));
+            
+            // Scroll to generated section
+            document.getElementById('generatedSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Copy functions
+        function copyLink() {
+            navigator.clipboard.writeText(currentLink);
+            alert('Link copied to clipboard!');
+        }
+        
+        function copyText() {
+            const text = document.getElementById('textTemplate').textContent;
+            navigator.clipboard.writeText(text);
+            alert('Text message copied to clipboard!');
+        }
+        
+        function copyEmail() {
+            const email = document.getElementById('emailTemplate').textContent;
+            navigator.clipboard.writeText(email);
+            alert('Email template copied to clipboard!');
+        }
+        
+        function testLink() {
+            window.open(currentLink, '_blank');
+        }
+        
+        function generateQR() {
+            // Open QR code generator with the link
+            window.open('https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(currentLink), '_blank');
+        }
+        
+        // Auto-format phone numbers
+        document.querySelectorAll('input[type="tel"]').forEach(input => {
+            input.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (value.length <= 3) {
+                        value = '(' + value;
+                    } else if (value.length <= 6) {
+                        value = '(' + value.slice(0, 3) + ') ' + value.slice(3);
+                    } else {
+                        value = '(' + value.slice(0, 3) + ') ' + value.slice(3, 6) + '-' + value.slice(6, 10);
+                    }
+                }
+                e.target.value = value;
+            });
+        });
+        
+        // Auto-format amount
+        document.getElementById('amountPaid').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d.]/g, '');
+            if (value && !e.target.value.startsWith('$')) {
+                e.target.value = '$' + value;
+            }
+        });
+        
+        // Load agent data on page load
+        document.addEventListener('DOMContentLoaded', loadAgentData);
+    </script>
+</body>
+</html>
