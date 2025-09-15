@@ -231,8 +231,8 @@
             <h2 class="section-title">Customer Information</h2>
             
             <div class="form-group">
-                <label for="customerName">Customer Full Name *</label>
-                <input type="text" id="customerName" placeholder="John Smith" required>
+                <label for="insuredName">Customer Full Name *</label>
+                <input type="text" id="insuredName" placeholder="John Smith" required>
             </div>
             
             <div class="form-row">
@@ -429,7 +429,7 @@
         
         function generateLink() {
             // Validate required fields
-            const requiredFields = ['customerName', 'phone', 'insuranceCompany', 'policyNumber', 'policyType', 'cancellationDate', 'reinstatementDate', 'agencyName'];
+            const requiredFields = ['insuredName', 'phone', 'insuranceCompany', 'policyNumber', 'policyType', 'cancellationDate', 'reinstatementDate', 'agencyName'];
             let isValid = true;
             
             requiredFields.forEach(field => {
@@ -447,8 +447,8 @@
                 return;
             }
             
-            // Get all values
-            const customerName = document.getElementById('customerName').value;
+            // Get ALL values - FIXED to include all fields
+            const insuredName = document.getElementById('insuredName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
             const propertyAddress = document.getElementById('propertyAddress').value;
@@ -468,22 +468,24 @@
             const agentName = document.getElementById('agentName').value;
             const agentEmail = document.getElementById('agentEmail').value;
             
-            // Build URL with parameters
+            // Build URL with ALL parameters - FIXED
             const params = new URLSearchParams();
-            if (customerName) params.append('insuredName', customerName);
+            
+            // CRITICAL: Pass ALL fields including the ones that were missing
+            params.append('insuredName', insuredName);  // This was missing!
             if (email) params.append('email', email);
             if (phone) params.append('phone', phone);
             if (propertyAddress) params.append('propertyAddress', propertyAddress);
             if (city) params.append('city', city);
             if (state) params.append('state', state);
             if (zipCode) params.append('zipCode', zipCode);
-            if (insuranceCompany) params.append('insuranceCompany', insuranceCompany);
-            if (policyNumber) params.append('policyNumber', policyNumber);
-            if (policyType) params.append('policyType', policyType);
-            if (cancellationDate) params.append('cancellationDate', cancellationDate);
-            if (reinstatementDate) params.append('reinstatementDate', reinstatementDate);
-            if (amountPaid) params.append('amountPaid', amountPaid);
-            if (agencyName) params.append('agencyName', agencyName);
+            params.append('insuranceCompany', insuranceCompany);  // This was missing!
+            params.append('policyNumber', policyNumber);
+            params.append('policyType', policyType);
+            params.append('cancellationDate', cancellationDate);  // This was missing!
+            params.append('reinstatementDate', reinstatementDate);  // This was missing!
+            if (amountPaid) params.append('amountPaid', amountPaid);  // This was missing!
+            params.append('agencyName', agencyName);
             if (agencyAddress) params.append('agencyAddress', agencyAddress);
             if (agencyPhone) params.append('agencyPhone', agencyPhone);
             if (agencyEmail) params.append('agencyEmail', agencyEmail);
@@ -496,26 +498,30 @@
             document.getElementById('generatedLink').textContent = currentLink;
             document.getElementById('resultSection').classList.add('show');
             
-            // Generate QR Code (using free API)
+            // Generate QR Code
             const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentLink)}`;
             document.getElementById('qrCode').innerHTML = `<img src="${qrCodeUrl}" alt="QR Code">`;
             
-            // Generate templates
-            const textTemplate = `Hi ${customerName},\n\n` +
+            // Generate templates with all info
+            const textTemplate = `Hi ${insuredName},\n\n` +
                 `${agencyName} needs you to complete a Statement of No Loss for your policy reinstatement.\n\n` +
                 `Policy: ${policyNumber}\n` +
-                `Company: ${insuranceCompany}\n\n` +
-                `Please click this link to complete the form:\n${currentLink}\n\n` +
+                `Company: ${insuranceCompany}\n` +
+                `Cancellation Date: ${cancellationDate}\n` +
+                `Reinstatement Date: ${reinstatementDate}\n` +
+                `${amountPaid ? 'Amount Due: ' + amountPaid + '\n' : ''}` +
+                `\nPlease click this link to complete the form:\n${currentLink}\n\n` +
                 `Your information has been pre-filled. Just review, sign, and submit.\n\n` +
                 `${agencyName}\n` +
                 `${agentName || 'Your Agent'}\n` +
                 `${agencyPhone || ''}`;
             
             const emailTemplate = `Subject: Action Required - Statement of No Loss for Policy ${policyNumber}\n\n` +
-                `Dear ${customerName},\n\n` +
+                `Dear ${insuredName},\n\n` +
                 `Your ${insuranceCompany} ${policyType} policy requires a Statement of No Loss for reinstatement.\n\n` +
                 `Policy Details:\n` +
                 `- Policy Number: ${policyNumber}\n` +
+                `- Insurance Company: ${insuranceCompany}\n` +
                 `- Cancellation Date: ${cancellationDate}\n` +
                 `- Reinstatement Date: ${reinstatementDate}\n` +
                 `${amountPaid ? '- Amount Due: ' + amountPaid + '\n' : ''}` +
