@@ -789,12 +789,16 @@
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
-            // Add additional data
+            // Generate confirmation number BEFORE submission
+            const confirmationNumber = 'NOL-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+            // Add additional data including confirmation number
             data.signatureUrl = document.getElementById('signature').value;
             data.submittedAt = new Date().toISOString();
             data.ipAddress = 'User IP';
             data.browserInfo = navigator.userAgent;
-            
+            data.confirmationNumber = confirmationNumber; // Send confirmation number to backend
+
             try {
                 // Submit to Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
@@ -805,9 +809,6 @@
                     },
                     body: JSON.stringify(data)
                 });
-                
-                // Generate confirmation number
-                const confirmationNumber = 'NOL-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(Math.random() * 10000).toString().padStart(4, '0');
                 
                 // Show success modal
                 document.getElementById('confirmNumber').textContent = confirmationNumber;
