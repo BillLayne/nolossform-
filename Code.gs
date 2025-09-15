@@ -264,7 +264,7 @@ function generateCompletePDF(data, confirmationNumber) {
 
     // Create two-column layout for policy info
     const policyTable = body.appendTable();
-    policyTable.setBorderWidth(0);
+    // REMOVED: policyTable.setBorderWidth(0);
 
     // Row 1: Insurance Company and Policy Number
     const row1 = policyTable.appendTableRow();
@@ -299,13 +299,10 @@ function generateCompletePDF(data, confirmationNumber) {
     const cell3d = row3.appendTableCell(formatDate(data.reinstatementDate || data.lapseEndDate));
     cell3d.getChild(0).asParagraph().setFontSize(10);
 
-    // Remove all borders
-    for (let i = 0; i < policyTable.getNumRows(); i++) {
-      const row = policyTable.getRow(i);
-      for (let j = 0; j < row.getNumCells(); j++) {
-        row.getCell(j).setBorderWidth(0);
-      }
-    }
+    // Style the table (without using setBorderWidth)
+    const policyTableAttr = policyTable.getAttributes();
+    policyTableAttr[DocumentApp.Attribute.BORDER_WIDTH] = 0;
+    policyTable.setAttributes(policyTableAttr);
 
     // ===== INSURED INFORMATION SECTION =====
     const insuredTitle = body.appendParagraph('INSURED INFORMATION');
@@ -316,7 +313,6 @@ function generateCompletePDF(data, confirmationNumber) {
     insuredTitle.setSpacingAfter(8);
 
     const insuredTable = body.appendTable();
-    insuredTable.setBorderWidth(0);
 
     // Insured info rows
     const insRow1 = insuredTable.appendTableRow();
@@ -351,17 +347,13 @@ function generateCompletePDF(data, confirmationNumber) {
       const insCell3b = insRow3.appendTableCell(addressText || 'N/A');
       insCell3b.getChild(0).asParagraph().setFontSize(10);
       insCell3b.setWidth(400);
-      insCell3a.setBorderWidth(0);
-      insCell3b.setBorderWidth(0);
+      // Removed setBorderWidth calls
     }
 
-    // Remove borders
-    for (let i = 0; i < insuredTable.getNumRows(); i++) {
-      const row = insuredTable.getRow(i);
-      for (let j = 0; j < row.getNumCells(); j++) {
-        row.getCell(j).setBorderWidth(0);
-      }
-    }
+    // Style the table (without using setBorderWidth)
+    const insuredTableAttr = insuredTable.getAttributes();
+    insuredTableAttr[DocumentApp.Attribute.BORDER_WIDTH] = 0;
+    insuredTable.setAttributes(insuredTableAttr);
 
     // Divider
     body.appendHorizontalRule();
