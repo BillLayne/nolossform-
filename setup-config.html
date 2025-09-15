@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoLossForm Setup Configuration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .output {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        .output h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .output pre {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+            border: 1px solid #e0e0e0;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+        .copy-btn {
+            background: #28a745;
+            padding: 8px 15px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 NoLossForm Quick Setup</h1>
+        <p>Enter your configuration details below to generate your custom setup:</p>
+        
+        <form id="setupForm">
+            <div class="form-group">
+                <label for="scriptUrl">Google Apps Script URL *</label>
+                <input type="url" id="scriptUrl" required 
+                       value="https://script.google.com/macros/s/AKfycbxP5rFSrbrDJ_3bFwi0xyBy054h5WkYBP89o54k5sEX7fk_8u0a74SbdHG0s3s32RDR/exec"
+                       placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+            </div>
+            
+            <div class="form-group">
+                <label for="domainUrl">Your Domain URL *</label>
+                <input type="url" id="domainUrl" required 
+                       value="https://nolossform.com"
+                       placeholder="https://nolossform.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="agencyName">Your Agency Name *</label>
+                <input type="text" id="agencyName" required 
+                       value="Bill Layne Insurance Agency"
+                       placeholder="Bill Layne Insurance Agency">
+            </div>
+            
+            <div class="form-group">
+                <label for="supportEmail">Support Email *</label>
+                <input type="email" id="supportEmail" required 
+                       value="nolossform@billlayneinsurance.com"
+                       placeholder="support@nolossform.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="supportPhone">Support Phone *</label>
+                <input type="tel" id="supportPhone" required 
+                       value="(336) 835-1993"
+                       placeholder="(336) 835-1993">
+            </div>
+            
+            <div class="form-group">
+                <label for="primaryColor">Primary Brand Color</label>
+                <input type="color" id="primaryColor" value="#1e3c72">
+            </div>
+            
+            <div class="form-group">
+                <label for="secondaryColor">Secondary Brand Color</label>
+                <input type="color" id="secondaryColor" value="#667eea">
+            </div>
+            
+            <button type="submit">Generate Configuration</button>
+        </form>
+        
+        <div id="output" class="output">
+            <h3>✅ Configuration Generated!</h3>
+            
+            <h4>Step 1: Update Your HTML Files</h4>
+            <p>Replace the SCRIPT_URL constant in these files:</p>
+            <pre id="scriptConfig"></pre>
+            <button class="copy-btn" onclick="copyToClipboard('scriptConfig')">Copy Script URL</button>
+            
+            <h4>Step 2: Update Domain References</h4>
+            <p>Replace BASE_URL in agent-portal.html:</p>
+            <pre id="domainConfig"></pre>
+            <button class="copy-btn" onclick="copyToClipboard('domainConfig')">Copy Domain URL</button>
+            
+            <h4>Step 3: CSS Variables (Optional)</h4>
+            <p>Add to your CSS files to update colors:</p>
+            <pre id="cssConfig"></pre>
+            <button class="copy-btn" onclick="copyToClipboard('cssConfig')">Copy CSS</button>
+            
+            <h4>Step 4: Deploy Instructions</h4>
+            <div id="deployInstructions"></div>
+        </div>
+        
+        <div id="successMessage" class="success">
+            ✅ Copied to clipboard!
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('setupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateConfiguration();
+        });
+        
+        function generateConfiguration() {
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            const domainUrl = document.getElementById('domainUrl').value.replace(/\/$/, '');
+            const agencyName = document.getElementById('agencyName').value;
+            const supportEmail = document.getElementById('supportEmail').value;
+            const supportPhone = document.getElementById('supportPhone').value;
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+            
+            // Generate script configuration
+            document.getElementById('scriptConfig').textContent = 
+`const SCRIPT_URL = '${scriptUrl}';`;
+            
+            // Generate domain configuration
+            document.getElementById('domainConfig').textContent = 
+`const BASE_URL = '${domainUrl}/';`;
+            
+            // Generate CSS configuration
+            document.getElementById('cssConfig').textContent = 
+`:root {
+    --primary-color: ${primaryColor};
+    --secondary-color: ${secondaryColor};
+}`;
+            
+            // Generate deployment instructions
+            document.getElementById('deployInstructions').innerHTML = `
+                <ol>
+                    <li><strong>GitHub Pages:</strong>
+                        <ul>
+                            <li>Create repository at github.com</li>
+                            <li>Upload all HTML files</li>
+                            <li>Create CNAME file with: ${domainUrl.replace('https://', '')}</li>
+                            <li>Enable GitHub Pages in Settings</li>
+                        </ul>
+                    </li>
+                    <li><strong>Contact Info to Update:</strong>
+                        <ul>
+                            <li>Email: ${supportEmail}</li>
+                            <li>Phone: ${supportPhone}</li>
+                            <li>Agency: ${agencyName}</li>
+                        </ul>
+                    </li>
+                    <li><strong>Test Your Setup:</strong>
+                        <ul>
+                            <li>Visit: ${domainUrl}/agent-portal.html</li>
+                            <li>Generate a test link</li>
+                            <li>Submit a test form</li>
+                            <li>Check your Google Sheets</li>
+                        </ul>
+                    </li>
+                </ol>
+            `;
+            
+            // Show output
+            document.getElementById('output').style.display = 'block';
+            document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
