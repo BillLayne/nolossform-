@@ -60,6 +60,13 @@
             margin-bottom: 20px;
         }
         
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
         label {
             display: block;
             font-weight: 600;
@@ -206,6 +213,10 @@
                 width: 100%;
                 margin: 5px 0;
             }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -220,84 +231,159 @@
             <h2 class="section-title">Customer Information</h2>
             
             <div class="form-group">
-                <label for="customerName">Customer Full Name</label>
-                <input type="text" id="customerName" placeholder="John Smith">
+                <label for="customerName">Customer Full Name *</label>
+                <input type="text" id="customerName" placeholder="John Smith" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Customer Email</label>
+                    <input type="email" id="email" placeholder="customer@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Customer Phone *</label>
+                    <input type="tel" id="phone" placeholder="(555) 123-4567" required>
+                </div>
             </div>
             
             <div class="form-group">
-                <label for="email">Customer Email</label>
-                <input type="email" id="email" placeholder="customer@email.com">
+                <label for="propertyAddress">Property Address</label>
+                <input type="text" id="propertyAddress" placeholder="123 Main Street">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="City">
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select id="state">
+                        <option value="">Select State</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="VA">Virginia</option>
+                        <option value="GA">Georgia</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="FL">Florida</option>
+                        <option value="AL">Alabama</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="TX">Texas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="MD">Maryland</option>
+                        <option value="DE">Delaware</option>
+                        <option value="PA">Pennsylvania</option>
+                    </select>
+                </div>
             </div>
             
             <div class="form-group">
-                <label for="phone">Customer Phone</label>
-                <input type="tel" id="phone" placeholder="(555) 123-4567">
+                <label for="zipCode">ZIP Code</label>
+                <input type="text" id="zipCode" placeholder="12345" maxlength="5">
             </div>
             
             <h2 class="section-title">Policy Information</h2>
             
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="insuranceCompany">Insurance Company *</label>
+                    <select id="insuranceCompany" required>
+                        <option value="">Select Insurance Company</option>
+                        <option value="Nationwide">Nationwide</option>
+                        <option value="Progressive">Progressive</option>
+                        <option value="National General">National General</option>
+                        <option value="Alamance">Alamance</option>
+                        <option value="Travelers">Travelers</option>
+                        <option value="Foremost">Foremost</option>
+                        <option value="State Farm">State Farm</option>
+                        <option value="Allstate">Allstate</option>
+                        <option value="GEICO">GEICO</option>
+                        <option value="Liberty Mutual">Liberty Mutual</option>
+                        <option value="Farmers">Farmers</option>
+                        <option value="USAA">USAA</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="policyNumber">Policy Number *</label>
+                    <input type="text" id="policyNumber" placeholder="POL-123456" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="policyType">Policy Type *</label>
+                    <select id="policyType" required>
+                        <option value="">Select Policy Type</option>
+                        <option value="Auto">Auto Insurance</option>
+                        <option value="Home">Homeowners Insurance</option>
+                        <option value="Renters">Renters Insurance</option>
+                        <option value="Motorcycle">Motorcycle Insurance</option>
+                        <option value="RV">RV Insurance</option>
+                        <option value="Commercial Auto">Commercial Auto</option>
+                        <option value="Business">Business Insurance</option>
+                        <option value="Life">Life Insurance</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amountPaid">Amount Paid for Reinstatement</label>
+                    <input type="text" id="amountPaid" placeholder="$0.00">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cancellationDate">Cancellation/Lapse Date *</label>
+                    <input type="date" id="cancellationDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reinstatementDate">Requested Reinstatement Date *</label>
+                    <input type="date" id="reinstatementDate" required>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Agency Information (Required for Branding)</h2>
+            
             <div class="form-group">
-                <label for="insuranceCompany">Insurance Company</label>
-                <select id="insuranceCompany">
-                    <option value="">Select Insurance Company</option>
-                    <option value="Nationwide">Nationwide</option>
-                    <option value="Progressive">Progressive</option>
-                    <option value="National General">National General</option>
-                    <option value="Alamance">Alamance</option>
-                    <option value="Travelers">Travelers</option>
-                    <option value="Foremost">Foremost</option>
-                    <option value="Other">Other</option>
-                </select>
+                <label for="agencyName">Your Agency Name *</label>
+                <input type="text" id="agencyName" placeholder="ABC Insurance Agency" required>
             </div>
             
             <div class="form-group">
-                <label for="policyNumber">Policy Number</label>
-                <input type="text" id="policyNumber" placeholder="POL-123456">
+                <label for="agencyAddress">Agency Address</label>
+                <input type="text" id="agencyAddress" placeholder="123 Main St, City ST 12345">
             </div>
             
-            <div class="form-group">
-                <label for="policyType">Policy Type</label>
-                <select id="policyType">
-                    <option value="">Select Policy Type</option>
-                    <option value="Auto">Auto Insurance</option>
-                    <option value="Home">Homeowners Insurance</option>
-                    <option value="Renters">Renters Insurance</option>
-                    <option value="Life">Life Insurance</option>
-                    <option value="Business">Business Insurance</option>
-                    <option value="Other">Other</option>
-                </select>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="agencyPhone">Agency Phone</label>
+                    <input type="tel" id="agencyPhone" placeholder="(555) 123-4567">
+                </div>
+                
+                <div class="form-group">
+                    <label for="agencyEmail">Agency Email</label>
+                    <input type="email" id="agencyEmail" placeholder="agency@email.com">
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="cancellationDate">Cancellation/Lapse Date</label>
-                <input type="date" id="cancellationDate">
-            </div>
-            
-            <div class="form-group">
-                <label for="reinstatementDate">Requested Reinstatement Date</label>
-                <input type="date" id="reinstatementDate">
-            </div>
-            
-            <div class="form-group">
-                <label for="amountPaid">Amount Paid for Reinstatement</label>
-                <input type="text" id="amountPaid" placeholder="$0.00">
-            </div>
-            
-            <h2 class="section-title">Agency Information (Optional)</h2>
-            
-            <div class="form-group">
-                <label for="agencyName">Your Agency Name</label>
-                <input type="text" id="agencyName" placeholder="ABC Insurance Agency">
-            </div>
-            
-            <div class="form-group">
-                <label for="agentName">Your Name</label>
-                <input type="text" id="agentName" placeholder="Agent Name">
-            </div>
-            
-            <div class="form-group">
-                <label for="agentEmail">Your Email (for copy of signed statement)</label>
-                <input type="email" id="agentEmail" placeholder="agent@agency.com">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="agentName">Your Name (Agent)</label>
+                    <input type="text" id="agentName" placeholder="Agent Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="agentEmail">Your Email (for copy of signed statement)</label>
+                    <input type="email" id="agentEmail" placeholder="agent@agency.com">
+                </div>
             </div>
             
             <button class="btn btn-primary" onclick="generateLink()">
@@ -332,21 +418,43 @@
         <div class="footer">
             <p>
                 NoLossForm.com - Statement of No Loss Platform<br>
-                Powered by Bill Layne Insurance Agency<br>
-                336-835-1993 | nolossform@billlayneinsurance.com
+                Automated Insurance Documentation System
             </p>
         </div>
     </div>
     
     <script>
-        const BASE_URL = 'https://nolossform.com/';
+        const BASE_URL = 'https://nolossform.com/form.html';
         let currentLink = '';
         
         function generateLink() {
+            // Validate required fields
+            const requiredFields = ['customerName', 'phone', 'insuranceCompany', 'policyNumber', 'policyType', 'cancellationDate', 'reinstatementDate', 'agencyName'];
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element.value) {
+                    element.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    element.style.borderColor = '#e0e0e0';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields marked with *');
+                return;
+            }
+            
             // Get all values
             const customerName = document.getElementById('customerName').value;
             const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
+            const propertyAddress = document.getElementById('propertyAddress').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
             const insuranceCompany = document.getElementById('insuranceCompany').value;
             const policyNumber = document.getElementById('policyNumber').value;
             const policyType = document.getElementById('policyType').value;
@@ -354,6 +462,9 @@
             const reinstatementDate = document.getElementById('reinstatementDate').value;
             const amountPaid = document.getElementById('amountPaid').value;
             const agencyName = document.getElementById('agencyName').value;
+            const agencyAddress = document.getElementById('agencyAddress').value;
+            const agencyPhone = document.getElementById('agencyPhone').value;
+            const agencyEmail = document.getElementById('agencyEmail').value;
             const agentName = document.getElementById('agentName').value;
             const agentEmail = document.getElementById('agentEmail').value;
             
@@ -362,6 +473,10 @@
             if (customerName) params.append('insuredName', customerName);
             if (email) params.append('email', email);
             if (phone) params.append('phone', phone);
+            if (propertyAddress) params.append('propertyAddress', propertyAddress);
+            if (city) params.append('city', city);
+            if (state) params.append('state', state);
+            if (zipCode) params.append('zipCode', zipCode);
             if (insuranceCompany) params.append('insuranceCompany', insuranceCompany);
             if (policyNumber) params.append('policyNumber', policyNumber);
             if (policyType) params.append('policyType', policyType);
@@ -369,6 +484,9 @@
             if (reinstatementDate) params.append('reinstatementDate', reinstatementDate);
             if (amountPaid) params.append('amountPaid', amountPaid);
             if (agencyName) params.append('agencyName', agencyName);
+            if (agencyAddress) params.append('agencyAddress', agencyAddress);
+            if (agencyPhone) params.append('agencyPhone', agencyPhone);
+            if (agencyEmail) params.append('agencyEmail', agencyEmail);
             if (agentName) params.append('agentName', agentName);
             if (agentEmail) params.append('agentEmail', agentEmail);
             
@@ -383,30 +501,34 @@
             document.getElementById('qrCode').innerHTML = `<img src="${qrCodeUrl}" alt="QR Code">`;
             
             // Generate templates
-            const textTemplate = `Hi ${customerName || '[Customer Name]'},\n\n` +
-                `Please complete your Statement of No Loss for policy reinstatement:\n${currentLink}\n\n` +
-                `Your information has been pre-filled for convenience. Just review, sign, and submit.\n\n` +
-                `${agencyName || 'Your Insurance Agency'}\n` +
-                `${agentName || 'Your Agent'}`;
+            const textTemplate = `Hi ${customerName},\n\n` +
+                `${agencyName} needs you to complete a Statement of No Loss for your policy reinstatement.\n\n` +
+                `Policy: ${policyNumber}\n` +
+                `Company: ${insuranceCompany}\n\n` +
+                `Please click this link to complete the form:\n${currentLink}\n\n` +
+                `Your information has been pre-filled. Just review, sign, and submit.\n\n` +
+                `${agencyName}\n` +
+                `${agentName || 'Your Agent'}\n` +
+                `${agencyPhone || ''}`;
             
-            const emailTemplate = `Subject: Action Required - Statement of No Loss for Policy ${policyNumber || '[Policy Number]'}\n\n` +
-                `Dear ${customerName || '[Customer Name]'},\n\n` +
-                `Your ${insuranceCompany || '[Insurance Company]'} policy requires a Statement of No Loss for reinstatement.\n\n` +
-                `Please click the link below to complete the form:\n${currentLink}\n\n` +
+            const emailTemplate = `Subject: Action Required - Statement of No Loss for Policy ${policyNumber}\n\n` +
+                `Dear ${customerName},\n\n` +
+                `Your ${insuranceCompany} ${policyType} policy requires a Statement of No Loss for reinstatement.\n\n` +
+                `Policy Details:\n` +
+                `- Policy Number: ${policyNumber}\n` +
+                `- Cancellation Date: ${cancellationDate}\n` +
+                `- Reinstatement Date: ${reinstatementDate}\n` +
+                `${amountPaid ? '- Amount Due: ' + amountPaid + '\n' : ''}` +
+                `\nPlease click the link below to complete the required form:\n${currentLink}\n\n` +
                 `Your information has been pre-filled. Simply:\n` +
                 `1. Review the information\n` +
-                `2. Read the statement\n` +
-                `3. Check the agreement box\n` +
-                `4. Sign electronically\n` +
-                `5. Submit\n\n` +
-                `This process takes less than 2 minutes.\n\n` +
-                `Policy Details:\n` +
-                `- Policy Number: ${policyNumber || '[Policy Number]'}\n` +
-                `- Cancellation Date: ${cancellationDate || '[Date]'}\n` +
-                `- Reinstatement Date: ${reinstatementDate || '[Date]'}\n` +
-                `- Amount Due: ${amountPaid || '[Amount]'}\n\n` +
+                `2. Read and acknowledge the statement\n` +
+                `3. Provide your electronic signature\n` +
+                `4. Submit the form\n\n` +
+                `This process takes less than 2 minutes to complete.\n\n` +
+                `IMPORTANT: This statement must be completed for your policy to be reinstated.\n\n` +
                 `If you have any questions, please contact me.\n\n` +
-                `Best regards,\n${agentName || '[Your Name]'}\n${agencyName || '[Your Agency]'}`;
+                `Best regards,\n${agentName || 'Your Agent'}\n${agencyName}\n${agencyPhone || ''}\n${agencyEmail || ''}`;
             
             document.getElementById('textTemplate').textContent = textTemplate;
             document.getElementById('emailTemplate').textContent = emailTemplate;
@@ -447,8 +569,11 @@
             }, 2000);
         }
         
-        // Auto-format phone number
-        document.getElementById('phone').addEventListener('input', function(e) {
+        // Auto-format phone numbers
+        document.getElementById('phone').addEventListener('input', formatPhoneNumber);
+        document.getElementById('agencyPhone').addEventListener('input', formatPhoneNumber);
+        
+        function formatPhoneNumber(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 0) {
                 if (value.length <= 3) {
@@ -460,7 +585,7 @@
                 }
             }
             e.target.value = value;
-        });
+        }
         
         // Auto-format amount
         document.getElementById('amountPaid').addEventListener('blur', function(e) {
@@ -471,6 +596,11 @@
                     e.target.value = '$' + num.toFixed(2);
                 }
             }
+        });
+        
+        // ZIP code validation
+        document.getElementById('zipCode').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
         });
     </script>
 </body>
