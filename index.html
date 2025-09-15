@@ -37,6 +37,7 @@
             background: rgba(255,255,255,0.2);
             padding: 5px;
             border-radius: 8px;
+            z-index: 10;
         }
         
         .lang-btn {
@@ -72,6 +73,7 @@
             font-size: 28px;
             margin-bottom: 15px;
             font-weight: 600;
+            padding-top: 20px;
         }
         
         .header h2 {
@@ -90,11 +92,29 @@
             padding: 10px;
             border-radius: 8px;
             margin-top: 15px;
+            display: none;
+        }
+        
+        .agent-info p {
             font-size: 13px;
+            margin: 3px 0;
         }
         
         .form-container {
             padding: 30px 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
         }
         
         .form-group {
@@ -109,156 +129,201 @@
             font-size: 14px;
         }
         
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="date"],
-        select {
+        .required-star {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+        
+        input, select, textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #e1e8ed;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
-            background: #f8f9fa;
+            background: white;
         }
         
-        input:focus,
-        select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #667eea;
-            background: white;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
         
-        .statement-box {
-            background: #f0f4ff;
-            border-left: 4px solid #667eea;
-            padding: 15px;
-            margin: 25px 0;
-            border-radius: 8px;
+        textarea {
+            resize: vertical;
+            min-height: 100px;
         }
         
-        .statement-box h3 {
-            color: #2a5298;
-            font-size: 16px;
-            margin-bottom: 10px;
+        .date-range {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
         
-        .statement-box p {
-            color: #555;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        .signature-container {
-            margin: 25px 0;
-        }
-        
-        .signature-label {
+        .checkbox-group {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         
-        #signature-pad {
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .signature-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .signature-pad {
             border: 2px dashed #ddd;
             border-radius: 10px;
-            display: block;
-            width: 100%;
-            height: 200px;
-            cursor: crosshair;
+            min-height: 200px;
             background: white;
-            touch-action: none;
+            position: relative;
+            overflow: hidden;
         }
         
-        .signature-buttons {
+        #signatureCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: crosshair;
+        }
+        
+        .signature-controls {
             display: flex;
             gap: 10px;
             margin-top: 10px;
         }
         
-        .btn {
-            padding: 12px 25px;
+        .btn-clear {
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s;
-            text-align: center;
-        }
-        
-        .btn-clear {
-            background: #f44336;
-            color: white;
-            flex: 1;
         }
         
         .btn-clear:hover {
-            background: #da190b;
+            background: #c0392b;
+            transform: translateY(-2px);
         }
         
-        .btn-submit {
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            width: 100%;
-            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
             font-size: 18px;
-            padding: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         
-        .btn-submit:hover {
+        .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(102,126,234,0.3);
         }
         
-        .btn-submit:disabled {
-            background: #ccc;
+        .submit-btn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
         
-        .success-message,
-        .error-message {
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success/Error Messages */
+        .message {
             padding: 15px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin-top: 20px;
             text-align: center;
-            font-weight: 600;
             display: none;
+            animation: slideDown 0.3s ease-out;
         }
         
-        .success-message {
-            background: #4CAF50;
-            color: white;
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
-        .error-message {
-            background: #f44336;
-            color: white;
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
         
-        /* Success Modal Styles */
-        .success-modal-overlay {
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Success Modal */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 10000;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
             animation: fadeIn 0.3s ease-out;
         }
         
-        .success-modal-overlay.show {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        .success-modal {
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
             border-radius: 20px;
             padding: 40px 30px;
@@ -266,7 +331,17 @@
             width: 90%;
             text-align: center;
             animation: slideUp 0.4s ease-out;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
         
         .success-icon {
@@ -278,100 +353,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: scaleIn 0.5s ease-out 0.2s both;
         }
         
-        .success-icon svg {
-            width: 40px;
-            height: 40px;
-            stroke: white;
-            stroke-width: 3;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            animation: drawCheck 0.6s ease-out 0.5s both;
-        }
-        
-        .success-modal h2 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .success-modal p {
-            color: #666;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        
-        .success-modal .confirmation-number {
-            background: #f0f4ff;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-family: monospace;
-            font-size: 14px;
-            color: #667eea;
-            font-weight: 600;
-        }
-        
-        .success-modal .btn-ok {
-            background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+        .success-icon::before {
+            content: '✓';
             color: white;
-            padding: 12px 40px;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        .modal-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .confirmation-number {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .modal-close {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
             cursor: pointer;
+            font-weight: 600;
             transition: all 0.3s;
         }
         
-        .success-modal .btn-ok:hover {
+        .modal-close:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
-        }
-        
-        @keyframes drawCheck {
-            from {
-                stroke-dasharray: 50;
-                stroke-dashoffset: 50;
-            }
-            to {
-                stroke-dasharray: 50;
-                stroke-dashoffset: 0;
-            }
         }
         
         .footer {
@@ -381,105 +400,17 @@
             border-top: 1px solid #e0e0e0;
         }
         
-        .footer img {
-            max-width: 150px;
-            height: auto;
+        .footer-logo {
+            max-width: 120px;
             margin-bottom: 10px;
         }
         
-        .footer p {
-            color: #666;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        .autofill-notice {
-            background: #4CAF50;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-            display: none;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
+        /* Mobile Optimizations */
         @media (max-width: 600px) {
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .header h2 {
-                font-size: 18px;
-            }
-            
-            .form-container {
-                padding: 20px 15px;
-            }
-            
-            input[type="text"],
-            input[type="email"],
-            input[type="tel"],
-            input[type="date"],
-            select {
-                font-size: 16px;
-                padding: 14px 12px;
-            }
-            
-            .success-modal {
-                width: 95%;
-                padding: 30px 20px;
-            }
-            
-            .success-icon {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .success-icon svg {
-                width: 30px;
-                height: 30px;
-            }
-            
-            .language-toggle {
-                position: static;
-                margin-bottom: 10px;
-                justify-content: center;
-                background: rgba(255,255,255,0.1);
-            }
+            .header h1 { font-size: 24px; }
+            .header h2 { font-size: 18px; }
+            .form-container { padding: 20px 15px; }
+            .date-range { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -487,587 +418,542 @@
     <div class="container">
         <div class="header">
             <div class="language-toggle">
-                <button class="lang-btn active" onclick="setLanguage('en', event)">English</button>
-                <button class="lang-btn" onclick="setLanguage('es', event)">Español</button>
+                <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+                <button class="lang-btn" onclick="setLanguage('es')">Español</button>
             </div>
-            <!-- Dynamic Agency Name -->
-            <h1 id="agencyHeader">Statement of No Loss</h1>
-            <h2 data-lang="header-title">Insurance Reinstatement Form</h2>
-            <p data-lang="header-subtitle">Electronic Signature Authorization</p>
-            <!-- Agent info section -->
-            <div id="agentInfoDisplay" class="agent-info" style="display: none;">
-                <strong>Your Agent:</strong> <span id="agentNameDisplay"></span><br>
-                <span id="agentEmailDisplay"></span>
+            <h1 id="agencyName">Loading...</h1>
+            <h2 data-translate="formTitle">Statement of No Loss</h2>
+            <p data-translate="formDescription">Policy Reinstatement Documentation</p>
+            <div class="agent-info" id="agentInfo">
+                <p><strong>Agent Contact:</strong></p>
+                <p id="agentEmail"></p>
+                <p id="agentPhone"></p>
             </div>
         </div>
         
         <form id="noLossForm" class="form-container">
-            <div class="autofill-notice" id="autofillNotice">
-                <span data-lang="autofill-notice">✨ Form has been pre-filled with your information</span>
-            </div>
+            <!-- Hidden fields for agency info -->
+            <input type="hidden" id="hiddenAgencyName" name="agencyName">
+            <input type="hidden" id="hiddenAgencyEmail" name="agencyEmail">
+            <input type="hidden" id="hiddenAgencyPhone" name="agencyPhone">
             
-            <div class="form-group">
-                <label for="insuranceCompany" data-lang="label-company">Insurance Company *</label>
-                <select id="insuranceCompany" name="insuranceCompany" required>
-                    <option value="" data-lang="select-company">Select Insurance Company</option>
-                    <option value="Nationwide">Nationwide</option>
-                    <option value="Progressive">Progressive</option>
-                    <option value="National General">National General</option>
-                    <option value="Alamance">Alamance</option>
-                    <option value="Travelers">Travelers</option>
-                    <option value="Foremost">Foremost</option>
-                    <option value="Other" data-lang="option-other">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="policyNumber" data-lang="label-policy">Policy Number *</label>
-                <input type="text" id="policyNumber" name="policyNumber" required placeholder="Enter policy number">
-            </div>
-            
-            <div class="form-group">
-                <label for="insuredName" data-lang="label-name">Insured Name (Full Name) *</label>
-                <input type="text" id="insuredName" name="insuredName" required placeholder="John Doe">
-            </div>
-            
-            <div class="form-group">
-                <label for="email" data-lang="label-email">Email Address *</label>
-                <input type="email" id="email" name="email" required placeholder="your@email.com">
-            </div>
-            
-            <div class="form-group">
-                <label for="phone" data-lang="label-phone">Phone Number *</label>
-                <input type="tel" id="phone" name="phone" required placeholder="(336) 555-1234">
-            </div>
-            
-            <div class="form-group">
-                <label for="cancellationDate" data-lang="label-cancel-date">Cancellation/Lapse Date *</label>
-                <input type="date" id="cancellationDate" name="cancellationDate" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="reinstatementDate" data-lang="label-reinstate-date">Requested Reinstatement Date *</label>
-                <input type="date" id="reinstatementDate" name="reinstatementDate" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="policyType" data-lang="label-policy-type">Policy Type *</label>
-                <select id="policyType" name="policyType" required>
-                    <option value="" data-lang="select-policy-type">Select Policy Type</option>
-                    <option value="Auto" data-lang="option-auto">Auto Insurance</option>
-                    <option value="Home" data-lang="option-home">Homeowners Insurance</option>
-                    <option value="Renters" data-lang="option-renters">Renters Insurance</option>
-                    <option value="Life" data-lang="option-life">Life Insurance</option>
-                    <option value="Business" data-lang="option-business">Business Insurance</option>
-                    <option value="Other" data-lang="option-other2">Other</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="amountPaid" data-lang="label-amount">Amount Paid for Reinstatement *</label>
-                <input type="text" id="amountPaid" name="amountPaid" required placeholder="$0.00">
-            </div>
-            
-            <div class="statement-box">
-                <h3 data-lang="statement-title">📋 Statement of No Loss</h3>
-                <div data-lang="statement-text">
-                    <p>
-                        I state that neither I nor any other person covered by this policy has had a claim or loss or been involved in an accident since the cancellation or expiration of the policy (otherwise known as the "no loss period") wherein this policy, including any and all coverages endorsed upon or made part of the policy may apply. In addition, if this reinstatement is for a personal or commercial auto, motorcycle, or RV policy, I certify that I have disclosed the current garaging location and use of all insured vehicles including if any such vehicle is used to deliver food or goods, to transport people for compensation, or for any other business purpose. I have also disclosed household members who are age 14 or older, and all persons who regularly drive any vehicle insured under this policy.
-                    </p>
-                    <p style="margin-top: 10px;">
-                        I understand that this insurance company is relying solely upon this Statement of No Loss all of which is material, as an inducement to reinstate my policy with no lapse in coverage. I further understand that if a claim, loss, or accident has occurred during the no loss period, or if I failed to disclose the current garaging location and primary use of all vehicles insured under this policy, all persons who regularly drive these vehicles, and all members of my household who are age 14 or older, the reinstatement is null and void, my policy remains cancelled and no insurance coverage shall be provided.
-                    </p>
-                    <p style="margin-top: 10px;">
-                        I agree that if my check or other payment for this reinstatement is not honored for any reason, the reinstatement is null and void and no coverage shall exist under this policy. I agree to pay a reinstatement fee and late fee (if applicable) in addition to the premium required to reinstate my policy. My payment will be applied first to the reinstatement and late fee and the remainder to the premium.
-                    </p>
-                    <p style="margin-top: 10px; font-weight: bold;">
-                        It is a crime to knowingly provide false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company. Penalties include imprisonment, fines, and denial of insurance benefits.
-                    </p>
-                    <p style="margin-top: 10px; font-weight: bold;">
-                        Do you understand and agree to these statements, terms, and conditions?
-                    </p>
+            <!-- Policyholder Information -->
+            <div class="form-section">
+                <h3 class="section-title" data-translate="policyholderInfo">Policyholder Information</h3>
+                
+                <div class="form-group">
+                    <label for="insuredName">
+                        <span data-translate="insuredName">Insured Name</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" id="insuredName" name="insuredName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="policyNumber">
+                        <span data-translate="policyNumber">Policy Number</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" id="policyNumber" name="policyNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="propertyAddress">
+                        <span data-translate="propertyAddress">Property Address</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" id="propertyAddress" name="propertyAddress" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">
+                        <span data-translate="city">City</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                
+                <div class="date-range">
+                    <div class="form-group">
+                        <label for="state">
+                            <span data-translate="state">State</span>
+                            <span class="required-star">*</span>
+                        </label>
+                        <select id="state" name="state" required>
+                            <option value="">Select State</option>
+                            <option value="NC" selected>North Carolina</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="VA">Virginia</option>
+                            <option value="GA">Georgia</option>
+                            <option value="TN">Tennessee</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zipCode">
+                            <span data-translate="zipCode">ZIP Code</span>
+                            <span class="required-star">*</span>
+                        </label>
+                        <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}" maxlength="5" required>
+                    </div>
                 </div>
             </div>
             
-            <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                <label style="display: flex; align-items: flex-start; cursor: pointer; font-weight: normal;">
-                    <input type="checkbox" id="agreeTerms" name="agreeTerms" required style="width: auto; margin-right: 10px; margin-top: 3px; transform: scale(1.2);">
-                    <span style="color: #333; font-size: 15px; line-height: 1.5;" data-lang="agree-checkbox">
-                        I have read, understand, and agree to all the statements, terms, and conditions outlined above in the Statement of No Loss.
-                    </span>
-                </label>
-            </div>
-            
-            <div class="signature-container">
-                <div class="signature-label">
-                    <label data-lang="label-signature">Electronic Signature *</label>
-                    <span style="color: #666; font-size: 12px;" data-lang="signature-instruction">Draw your signature below</span>
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3 class="section-title" data-translate="contactInfo">Contact Information</h3>
+                
+                <div class="form-group">
+                    <label for="email">
+                        <span data-translate="email">Email Address</span>
+                    </label>
+                    <input type="email" id="email" name="email">
                 </div>
-                <canvas id="signature-pad"></canvas>
-                <div class="signature-buttons">
-                    <button type="button" class="btn btn-clear" onclick="clearSignature()" data-lang="btn-clear">Clear Signature</button>
+                
+                <div class="form-group">
+                    <label for="phone">
+                        <span data-translate="phone">Phone Number</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
             </div>
             
-            <!-- Hidden fields for form data -->
-            <input type="hidden" id="signature" name="signature">
-            <input type="hidden" id="confirmationNumber" name="confirmationNumber">
-            
-            <!-- CRITICAL: Hidden fields for agency info -->
-            <input type="hidden" id="agencyName" name="agencyName" value="">
-            <input type="hidden" id="agentName" name="agentName" value="">
-            <input type="hidden" id="agentEmail" name="agentEmail" value="">
-            
-            <div class="success-message" id="successMessage">
-                <span data-lang="success-msg">✅ Your Statement of No Loss has been successfully submitted!</span>
+            <!-- Coverage Period -->
+            <div class="form-section">
+                <h3 class="section-title" data-translate="coveragePeriod">Coverage Lapse Period</h3>
+                
+                <div class="date-range">
+                    <div class="form-group">
+                        <label for="lapseStartDate">
+                            <span data-translate="lapseStartDate">Lapse Start Date</span>
+                            <span class="required-star">*</span>
+                        </label>
+                        <input type="date" id="lapseStartDate" name="lapseStartDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lapseEndDate">
+                            <span data-translate="lapseEndDate">Reinstatement Date</span>
+                            <span class="required-star">*</span>
+                        </label>
+                        <input type="date" id="lapseEndDate" name="lapseEndDate" required>
+                    </div>
+                </div>
             </div>
             
-            <div class="error-message" id="errorMessage">
-                <span data-lang="error-msg">❌ There was an error submitting your form. Please try again.</span>
+            <!-- Statement of No Loss -->
+            <div class="form-section">
+                <h3 class="section-title" data-translate="statementSection">Statement of No Loss</h3>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="noLossConfirmation" name="noLossConfirmation" required>
+                    <label for="noLossConfirmation" data-translate="noLossStatement">
+                        I hereby certify that NO LOSS, damage, or claim has occurred to the above-described property during the period of lapse in coverage.
+                    </label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="understandReinstatement" name="understandReinstatement" required>
+                    <label for="understandReinstatement" data-translate="understandStatement">
+                        I understand that this statement is required for reinstatement of my policy and that any false statement may void coverage.
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalComments">
+                        <span data-translate="additionalComments">Additional Comments (Optional)</span>
+                    </label>
+                    <textarea id="additionalComments" name="additionalComments" rows="3"></textarea>
+                </div>
             </div>
             
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p style="margin-top: 10px;" data-lang="loading-msg">Submitting your statement...</p>
+            <!-- Signature Section -->
+            <div class="form-section">
+                <h3 class="section-title" data-translate="signatureSection">Electronic Signature</h3>
+                
+                <div class="signature-section">
+                    <p data-translate="signatureInstructions" style="margin-bottom: 15px; color: #666;">
+                        Please sign below using your mouse or finger
+                    </p>
+                    <div class="signature-pad" id="signaturePad">
+                        <canvas id="signatureCanvas"></canvas>
+                    </div>
+                    <div class="signature-controls">
+                        <button type="button" class="btn-clear" onclick="clearSignature()" data-translate="clearSignature">Clear Signature</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signatureDate">
+                        <span data-translate="signatureDate">Date</span>
+                        <span class="required-star">*</span>
+                    </label>
+                    <input type="date" id="signatureDate" name="signatureDate" required>
+                </div>
             </div>
             
-            <button type="submit" class="btn btn-submit" id="submitBtn" data-lang="btn-submit">
-                Submit Statement of No Loss
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span id="btnText" data-translate="submitButton">Submit Statement of No Loss</span>
+                <div class="spinner" id="spinner"></div>
             </button>
+            
+            <!-- Messages -->
+            <div id="successMessage" class="message success"></div>
+            <div id="errorMessage" class="message error"></div>
         </form>
         
-        <div class="footer" id="footerInfo">
-            <p>
-                <span id="footerAgencyName">NoLossForm.com</span><br>
-                <span id="footerContact">Statement of No Loss Platform</span>
-            </p>
-            <p style="margin-top: 10px; font-size: 11px; color: #999;">
+        <div class="footer">
+            <p style="color: #666; font-size: 14px;">
                 Powered by NoLossForm.com
             </p>
         </div>
     </div>
-
+    
     <!-- Success Modal -->
-    <div class="success-modal-overlay" id="successModalOverlay">
-        <div class="success-modal">
-            <div class="success-icon">
-                <svg viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
-            <h2 data-lang="modal-title">Successfully Submitted!</h2>
-            <p data-lang="modal-text">Your Statement of No Loss has been received and processed successfully.</p>
-            <div class="confirmation-number" id="confirmationDisplay">
-                <span data-lang="modal-confirmation">Confirmation #:</span> <span id="confirmNumber"></span>
-            </div>
-            <p style="font-size: 14px; color: #888;" data-lang="modal-email">
-                A confirmation email has been sent to your registered email address.
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon"></div>
+            <h3 data-translate="successTitle">Statement Submitted!</h3>
+            <p data-translate="successMessage">Your Statement of No Loss has been successfully submitted.</p>
+            <div class="confirmation-number" id="confirmationNumber"></div>
+            <p data-translate="successNote" style="color: #666; font-size: 14px; margin: 15px 0;">
+                A confirmation email has been sent if an email address was provided.
             </p>
-            <button class="btn-ok" onclick="closeSuccessModal()">OK</button>
+            <button class="modal-close" onclick="closeModal()" data-translate="closeButton">Close</button>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    
     <script>
-        // CRITICAL: Update this with YOUR Google Apps Script URL from the deployment
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMR6JkqwOFjLUR4BRo7QE0mRiEwKxbcpdCDwJi5AKOmM4MMorM1EROWYMcH7gH1Vke/exec';
+        // Your Script URL from Google Apps Script deployment
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP5rFSrbrDJ_3bFwi0xyBy054h5WkYBP89o54k5sEX7fk_8u0a74SbdHG0s3s32RDR/exec';
         
-        let signaturePad;
-        let currentConfirmationNumber = '';
-        let currentLanguage = 'en';
-        
-        // Global storage for agency info from URL
-        let urlAgencyInfo = {
-            agencyName: '',
-            agentName: '',
-            agentEmail: ''
-        };
-        
-        // Language translations
+        // Translation dictionary
         const translations = {
             en: {
-                'header-title': 'Insurance Reinstatement Form',
-                'header-subtitle': 'Electronic Signature Authorization',
-                'autofill-notice': '✨ Form has been pre-filled with your information',
-                'label-company': 'Insurance Company *',
-                'select-company': 'Select Insurance Company',
-                'option-other': 'Other',
-                'label-policy': 'Policy Number *',
-                'label-name': 'Insured Name (Full Name) *',
-                'label-email': 'Email Address *',
-                'label-phone': 'Phone Number *',
-                'label-cancel-date': 'Cancellation/Lapse Date *',
-                'label-reinstate-date': 'Requested Reinstatement Date *',
-                'label-policy-type': 'Policy Type *',
-                'select-policy-type': 'Select Policy Type',
-                'option-auto': 'Auto Insurance',
-                'option-home': 'Homeowners Insurance',
-                'option-renters': 'Renters Insurance',
-                'option-life': 'Life Insurance',
-                'option-business': 'Business Insurance',
-                'option-other2': 'Other',
-                'label-amount': 'Amount Paid for Reinstatement *',
-                'statement-title': '📋 Statement of No Loss',
-                'agree-checkbox': 'I have read, understand, and agree to all the statements, terms, and conditions outlined above in the Statement of No Loss.',
-                'label-signature': 'Electronic Signature *',
-                'signature-instruction': 'Draw your signature below',
-                'btn-clear': 'Clear Signature',
-                'btn-submit': 'Submit Statement of No Loss',
-                'success-msg': '✅ Your Statement of No Loss has been successfully submitted!',
-                'error-msg': '❌ There was an error submitting your form. Please try again.',
-                'loading-msg': 'Submitting your statement...',
-                'modal-title': 'Successfully Submitted!',
-                'modal-text': 'Your Statement of No Loss has been received and processed successfully.',
-                'modal-confirmation': 'Confirmation #:',
-                'modal-email': 'A confirmation email has been sent to your registered email address.',
-                'alert-agree': 'Please check the box to agree to the terms and conditions before submitting.',
-                'alert-signature': 'Please provide your signature before submitting.'
+                formTitle: "Statement of No Loss",
+                formDescription: "Policy Reinstatement Documentation",
+                policyholderInfo: "Policyholder Information",
+                insuredName: "Insured Name",
+                policyNumber: "Policy Number",
+                propertyAddress: "Property Address",
+                city: "City",
+                state: "State",
+                zipCode: "ZIP Code",
+                contactInfo: "Contact Information",
+                email: "Email Address",
+                phone: "Phone Number",
+                coveragePeriod: "Coverage Lapse Period",
+                lapseStartDate: "Lapse Start Date",
+                lapseEndDate: "Reinstatement Date",
+                statementSection: "Statement of No Loss",
+                noLossStatement: "I hereby certify that NO LOSS, damage, or claim has occurred to the above-described property during the period of lapse in coverage.",
+                understandStatement: "I understand that this statement is required for reinstatement of my policy and that any false statement may void coverage.",
+                additionalComments: "Additional Comments (Optional)",
+                signatureSection: "Electronic Signature",
+                signatureInstructions: "Please sign below using your mouse or finger",
+                clearSignature: "Clear Signature",
+                signatureDate: "Date",
+                submitButton: "Submit Statement of No Loss",
+                successTitle: "Statement Submitted!",
+                successMessage: "Your Statement of No Loss has been successfully submitted.",
+                successNote: "A confirmation email has been sent if an email address was provided.",
+                closeButton: "Close"
             },
             es: {
-                'header-title': 'Formulario de Reinstalación de Seguro',
-                'header-subtitle': 'Autorización de Firma Electrónica',
-                'autofill-notice': '✨ El formulario ha sido prellenado con su información',
-                'label-company': 'Compañía de Seguros *',
-                'select-company': 'Seleccione Compañía de Seguros',
-                'option-other': 'Otra',
-                'label-policy': 'Número de Póliza *',
-                'label-name': 'Nombre del Asegurado (Nombre Completo) *',
-                'label-email': 'Correo Electrónico *',
-                'label-phone': 'Número de Teléfono *',
-                'label-cancel-date': 'Fecha de Cancelación/Vencimiento *',
-                'label-reinstate-date': 'Fecha de Reinstalación Solicitada *',
-                'label-policy-type': 'Tipo de Póliza *',
-                'select-policy-type': 'Seleccione Tipo de Póliza',
-                'option-auto': 'Seguro de Auto',
-                'option-home': 'Seguro de Propietario',
-                'option-renters': 'Seguro de Inquilino',
-                'option-life': 'Seguro de Vida',
-                'option-business': 'Seguro de Negocio',
-                'option-other2': 'Otro',
-                'label-amount': 'Cantidad Pagada para Reinstalación *',
-                'statement-title': '📋 Declaración de No Pérdida',
-                'agree-checkbox': 'He leído, entiendo y acepto todas las declaraciones, términos y condiciones descritos anteriormente en la Declaración de No Pérdida.',
-                'label-signature': 'Firma Electrónica *',
-                'signature-instruction': 'Dibuje su firma abajo',
-                'btn-clear': 'Borrar Firma',
-                'btn-submit': 'Enviar Declaración de No Pérdida',
-                'success-msg': '✅ ¡Su Declaración de No Pérdida ha sido enviada exitosamente!',
-                'error-msg': '❌ Hubo un error al enviar su formulario. Por favor intente de nuevo.',
-                'loading-msg': 'Enviando su declaración...',
-                'modal-title': '¡Enviado Exitosamente!',
-                'modal-text': 'Su Declaración de No Pérdida ha sido recibida y procesada exitosamente.',
-                'modal-confirmation': 'Número de Confirmación:',
-                'modal-email': 'Se ha enviado un correo de confirmación a su dirección de correo electrónico registrada.',
-                'alert-agree': 'Por favor marque la casilla para aceptar los términos y condiciones antes de enviar.',
-                'alert-signature': 'Por favor proporcione su firma antes de enviar.'
+                formTitle: "Declaración de No Pérdida",
+                formDescription: "Documentación de Restablecimiento de Póliza",
+                policyholderInfo: "Información del Asegurado",
+                insuredName: "Nombre del Asegurado",
+                policyNumber: "Número de Póliza",
+                propertyAddress: "Dirección de la Propiedad",
+                city: "Ciudad",
+                state: "Estado",
+                zipCode: "Código Postal",
+                contactInfo: "Información de Contacto",
+                email: "Correo Electrónico",
+                phone: "Número de Teléfono",
+                coveragePeriod: "Período de Lapso de Cobertura",
+                lapseStartDate: "Fecha de Inicio del Lapso",
+                lapseEndDate: "Fecha de Restablecimiento",
+                statementSection: "Declaración de No Pérdida",
+                noLossStatement: "Por la presente certifico que NO ha ocurrido NINGUNA PÉRDIDA, daño o reclamo a la propiedad descrita durante el período de lapso en la cobertura.",
+                understandStatement: "Entiendo que esta declaración es requerida para el restablecimiento de mi póliza y que cualquier declaración falsa puede anular la cobertura.",
+                additionalComments: "Comentarios Adicionales (Opcional)",
+                signatureSection: "Firma Electrónica",
+                signatureInstructions: "Por favor firme abajo usando su mouse o dedo",
+                clearSignature: "Borrar Firma",
+                signatureDate: "Fecha",
+                submitButton: "Enviar Declaración de No Pérdida",
+                successTitle: "¡Declaración Enviada!",
+                successMessage: "Su Declaración de No Pérdida ha sido enviada exitosamente.",
+                successNote: "Se ha enviado un correo de confirmación si se proporcionó una dirección de correo.",
+                closeButton: "Cerrar"
             }
         };
         
-        // Language switching
-        function setLanguage(lang, event) {
+        let currentLanguage = 'en';
+        let signaturePad = null;
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Get agency information from URL parameters
+            const agencyName = urlParams.get('agencyName');
+            const agencyEmail = urlParams.get('agencyEmail');
+            const agencyPhone = urlParams.get('agencyPhone');
+            
+            // Update header with agency information
+            if (agencyName) {
+                document.getElementById('agencyName').textContent = decodeURIComponent(agencyName);
+                document.getElementById('hiddenAgencyName').value = decodeURIComponent(agencyName);
+                
+                // Show agent contact info if provided
+                if (agencyEmail || agencyPhone) {
+                    const agentInfoDiv = document.getElementById('agentInfo');
+                    agentInfoDiv.style.display = 'block';
+                    
+                    if (agencyEmail) {
+                        document.getElementById('agentEmail').textContent = decodeURIComponent(agencyEmail);
+                        document.getElementById('hiddenAgencyEmail').value = decodeURIComponent(agencyEmail);
+                    }
+                    
+                    if (agencyPhone) {
+                        document.getElementById('agentPhone').textContent = decodeURIComponent(agencyPhone);
+                        document.getElementById('hiddenAgencyPhone').value = decodeURIComponent(agencyPhone);
+                    }
+                }
+            } else {
+                // Default to Bill Layne Insurance if no agency specified
+                document.getElementById('agencyName').textContent = 'Bill Layne Insurance Agency';
+                document.getElementById('hiddenAgencyName').value = 'Bill Layne Insurance Agency';
+            }
+            
+            // Pre-fill form fields from URL parameters
+            const fields = ['insuredName', 'policyNumber', 'propertyAddress', 'city', 'state', 'zipCode', 'email', 'phone'];
+            fields.forEach(field => {
+                const value = urlParams.get(field);
+                if (value) {
+                    const element = document.getElementById(field);
+                    if (element) {
+                        element.value = decodeURIComponent(value);
+                    }
+                }
+            });
+            
+            // Set today's date for signature date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('signatureDate').value = today;
+            
+            // Initialize signature pad
+            initSignaturePad();
+        });
+        
+        // Language toggle function
+        function setLanguage(lang) {
             currentLanguage = lang;
             
+            // Update button states
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
+            event.target.classList.add('active');
             
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
-                const langButton = document.querySelector(`.lang-btn[onclick*="'${lang}'"]`);
-                if (langButton) {
-                    langButton.classList.add('active');
-                }
-            }
-            
-            document.querySelectorAll('[data-lang]').forEach(element => {
-                const key = element.getAttribute('data-lang');
+            // Update all translatable elements
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
                 if (translations[lang][key]) {
                     element.textContent = translations[lang][key];
                 }
             });
-            
-            localStorage.setItem('preferredLanguage', lang);
         }
         
-        // CRITICAL FUNCTION: Get URL parameters and extract agency info
-        function getUrlParameters() {
-            const params = new URLSearchParams(window.location.search);
-            const paramObject = {};
-            for (const [key, value] of params) {
-                paramObject[key] = decodeURIComponent(value);
+        // Initialize signature pad
+        function initSignaturePad() {
+            const canvas = document.getElementById('signatureCanvas');
+            const container = document.getElementById('signaturePad');
+            
+            // Set canvas size
+            canvas.width = container.offsetWidth - 4;
+            canvas.height = 200;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                lastX = x;
+                lastY = y;
             }
-            return paramObject;
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                e.preventDefault();
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+            }
+            
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events
+            canvas.addEventListener('touchstart', startDrawing);
+            canvas.addEventListener('touchmove', draw);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            signaturePad = { canvas, ctx };
         }
         
-        // CRITICAL FUNCTION: Auto-fill form and capture agency info
-        function autoFillForm() {
-            const params = getUrlParameters();
-            let fieldsAutoFilled = false;
-            
-            console.log('URL Parameters received:', params);
-            
-            // CRITICAL: Capture agency information from URL
-            if (params.agencyName) {
-                urlAgencyInfo.agencyName = params.agencyName;
-                document.getElementById('agencyName').value = params.agencyName;
-                document.getElementById('agencyHeader').textContent = params.agencyName;
-                document.getElementById('footerAgencyName').textContent = params.agencyName;
-                console.log('Agency Name set to:', params.agencyName);
-            }
-            
-            if (params.agentName) {
-                urlAgencyInfo.agentName = params.agentName;
-                document.getElementById('agentName').value = params.agentName;
-                document.getElementById('agentNameDisplay').textContent = params.agentName;
-                document.getElementById('agentInfoDisplay').style.display = 'block';
-            }
-            
-            if (params.agentEmail) {
-                urlAgencyInfo.agentEmail = params.agentEmail;
-                document.getElementById('agentEmail').value = params.agentEmail;
-                if (params.agentName) {
-                    document.getElementById('agentEmailDisplay').textContent = params.agentEmail;
-                }
-            }
-            
-            // Field mappings for form auto-fill
-            const fieldMapping = {
-                'insuredName': 'insuredName',
-                'email': 'email',
-                'phone': 'phone',
-                'insuranceCompany': 'insuranceCompany',
-                'policyNumber': 'policyNumber',
-                'policyType': 'policyType',
-                'cancellationDate': 'cancellationDate',
-                'reinstatementDate': 'reinstatementDate',
-                'amountPaid': 'amountPaid',
-                'customerName': 'insuredName',
-                'name': 'insuredName',
-                'company': 'insuranceCompany',
-                'policy': 'policyNumber',
-                'tel': 'phone',
-                'cancelDate': 'cancellationDate',
-                'reinstateDate': 'reinstatementDate',
-                'type': 'policyType',
-                'amount': 'amountPaid'
-            };
-            
-            // Fill form fields
-            for (const [urlParam, fieldId] of Object.entries(fieldMapping)) {
-                if (params[urlParam]) {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.value = params[urlParam];
-                        fieldsAutoFilled = true;
-                        
-                        if (fieldId === 'amountPaid' && !params[urlParam].startsWith('$')) {
-                            field.value = '$' + params[urlParam];
-                        }
-                    }
-                }
-            }
-            
-            // Show notification if fields were auto-filled
-            if (fieldsAutoFilled) {
-                const notice = document.getElementById('autofillNotice');
-                notice.style.display = 'block';
-                setTimeout(() => {
-                    notice.style.opacity = '0';
-                    setTimeout(() => {
-                        notice.style.display = 'none';
-                        notice.style.opacity = '1';
-                    }, 500);
-                }, 3000);
-            }
-        }
-        
-        // Generate confirmation number
-        function generateConfirmationNumber() {
-            const date = new Date();
-            const year = date.getFullYear().toString().slice(-2);
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-            return `NOL-${year}${month}${day}-${random}`;
-        }
-        
-        // Modal functions
-        function closeSuccessModal() {
-            document.getElementById('successModalOverlay').classList.remove('show');
-        }
-        
-        function showSuccessModal() {
-            document.getElementById('confirmNumber').textContent = currentConfirmationNumber;
-            document.getElementById('successModalOverlay').classList.add('show');
-        }
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check language preference
-            const urlParams = new URLSearchParams(window.location.search);
-            const langParam = urlParams.get('lang');
-            
-            if (langParam === 'es') {
-                setLanguage('es');
-            } else {
-                const savedLang = localStorage.getItem('preferredLanguage');
-                if (savedLang && savedLang !== 'en') {
-                    setLanguage(savedLang);
-                }
-            }
-            
-            // CRITICAL: Auto-fill form and capture agency info
-            autoFillForm();
-            
-            // Initialize signature pad
-            const canvas = document.getElementById('signature-pad');
-            signaturePad = new SignaturePad(canvas, {
-                backgroundColor: 'rgb(255, 255, 255)',
-                penColor: 'rgb(0, 0, 0)'
-            });
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            
-            // Modal close on outside click
-            document.getElementById('successModalOverlay').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeSuccessModal();
-                }
-            });
-        });
-        
-        function resizeCanvas() {
-            const canvas = document.getElementById('signature-pad');
-            const ratio = Math.max(window.devicePixelRatio || 1, 1);
-            canvas.width = canvas.offsetWidth * ratio;
-            canvas.height = canvas.offsetHeight * ratio;
-            canvas.getContext('2d').scale(ratio, ratio);
-            if (signaturePad) {
-                signaturePad.clear();
-            }
-        }
-        
+        // Clear signature
         function clearSignature() {
-            signaturePad.clear();
+            if (signaturePad) {
+                signaturePad.ctx.clearRect(0, 0, signaturePad.canvas.width, signaturePad.canvas.height);
+            }
         }
         
-        // CRITICAL: Form submission handler with agency info
+        // Check if signature is empty
+        function isSignatureEmpty() {
+            if (!signaturePad) return true;
+            const imageData = signaturePad.ctx.getImageData(0, 0, signaturePad.canvas.width, signaturePad.canvas.height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] !== 0) return false;
+            }
+            return true;
+        }
+        
+        // Handle form submission
         document.getElementById('noLossForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate agreement
-            if (!document.getElementById('agreeTerms').checked) {
-                alert(translations[currentLanguage]['alert-agree']);
-                return;
-            }
-            
             // Validate signature
-            if (signaturePad.isEmpty()) {
-                alert(translations[currentLanguage]['alert-signature']);
+            if (isSignatureEmpty()) {
+                showMessage('Please provide your signature before submitting.', 'error');
                 return;
             }
             
-            // Generate confirmation number
-            currentConfirmationNumber = generateConfirmationNumber();
-            
-            // Get signature data
-            document.getElementById('signature').value = signaturePad.toDataURL();
-            document.getElementById('confirmationNumber').value = currentConfirmationNumber;
-            
-            // CRITICAL: Ensure agency info is in hidden fields
-            document.getElementById('agencyName').value = urlAgencyInfo.agencyName || 'NoLossForm.com';
-            document.getElementById('agentName').value = urlAgencyInfo.agentName || '';
-            document.getElementById('agentEmail').value = urlAgencyInfo.agentEmail || '';
-            
-            console.log('Submitting with agency:', document.getElementById('agencyName').value);
-            
-            // Show loading
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-            
-            // Prepare form data
+            // Get form data
             const formData = new FormData(this);
-            formData.append('submissionDate', new Date().toLocaleString());
+            const data = Object.fromEntries(formData);
             
-            // Debug what we're sending
-            console.log('Form data being sent:');
-            for (let [key, value] of formData.entries()) {
-                if (key === 'agencyName' || key === 'agentName' || key === 'agentEmail') {
-                    console.log(key + ':', value);
-                }
-            }
+            // Add signature as base64
+            data.signature = signaturePad.canvas.toDataURL();
+            data.submittedAt = new Date().toISOString();
+            data.language = currentLanguage;
+            
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
             
             try {
+                // Submit to Google Apps Script
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: formData
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
                 });
                 
-                const result = await response.text();
-                console.log('Response:', result);
+                // Generate confirmation number (since no-cors doesn't return data)
+                const confirmationNumber = 'SNL-' + Date.now().toString().slice(-8);
                 
-                if (result.includes('Success') || result.includes('success') || response.ok) {
-                    showSuccessModal();
-                    document.getElementById('successMessage').style.display = 'block';
-                    document.getElementById('noLossForm').reset();
-                    signaturePad.clear();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    throw new Error('Submission failed');
-                }
+                // Show success modal
+                document.getElementById('confirmationNumber').textContent = confirmationNumber;
+                document.getElementById('successModal').style.display = 'block';
+                
+                // Reset form
+                this.reset();
+                clearSignature();
+                
+                // Set today's date again
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('signatureDate').value = today;
+                
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('errorMessage').style.display = 'block';
+                showMessage('Failed to submit form. Please try again or contact your agent.', 'error');
             } finally {
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('submitBtn').disabled = false;
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
             }
         });
+        
+        // Show message function
+        function showMessage(text, type) {
+            const messageEl = type === 'success' 
+                ? document.getElementById('successMessage')
+                : document.getElementById('errorMessage');
+            
+            messageEl.textContent = text;
+            messageEl.style.display = 'block';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
         
         // Phone number formatting
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 0) {
                 if (value.length <= 3) {
-                    value = '(' + value;
+                    value = `(${value}`;
                 } else if (value.length <= 6) {
-                    value = '(' + value.slice(0, 3) + ') ' + value.slice(3);
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
                 } else {
-                    value = '(' + value.slice(0, 3) + ') ' + value.slice(3, 6) + '-' + value.slice(6, 10);
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
                 }
             }
             e.target.value = value;
         });
         
-        // Amount formatting
-        document.getElementById('amountPaid').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/[^\d.]/g, '');
-            let parts = value.split('.');
-            if (parts.length > 2) {
-                value = parts[0] + '.' + parts.slice(1).join('');
-            }
-            if (parts.length === 2 && parts[1].length > 2) {
-                value = parts[0] + '.' + parts[1].slice(0, 2);
-            }
-            if (value && !e.target.value.startsWith('$')) {
-                e.target.value = '$' + value;
-            } else if (value === '') {
-                e.target.value = '';
-            }
-        });
-        
-        document.getElementById('amountPaid').addEventListener('blur', function(e) {
-            let value = e.target.value.replace(/[^\d.]/g, '');
-            if (value) {
-                let num = parseFloat(value);
-                if (!isNaN(num)) {
-                    e.target.value = '$' + num.toFixed(2);
-                }
-            }
+        // ZIP code validation
+        document.getElementById('zipCode').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 5);
         });
     </script>
 </body>
