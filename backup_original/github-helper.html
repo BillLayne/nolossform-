@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoLossForm GitHub Deployment Helper</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .file-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+        }
+        .old-name {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+        .new-name {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .arrow {
+            color: #666;
+            margin: 0 10px;
+        }
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .warning {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        .success {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .btn-primary {
+            background: #007bff;
+        }
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 GitHub Pages Deployment Helper</h1>
+        <p>This helper will guide you through renaming your files for GitHub Pages deployment.</p>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong> GitHub Pages requires an `index.html` as the homepage. We need to rename your files.
+        </div>
+        
+        <div class="file-list">
+            <h3>📁 Required File Changes:</h3>
+            <div class="file-item">
+                <span><span class="old-name">home.html</span> <span class="arrow">→</span> <span class="new-name">index.html</span></span>
+                <span>(Your main landing page)</span>
+            </div>
+            <div class="file-item">
+                <span><span class="old-name">index.html</span> <span class="arrow">→</span> <span class="new-name">form.html</span></span>
+                <span>(Statement of No Loss form)</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>📝 Step-by-Step Instructions:</h3>
+            
+            <h4>1. Rename Your Files:</h4>
+            <ul>
+                <li>Rename <code>home.html</code> to <code>index.html</code></li>
+                <li>Rename your current <code>index.html</code> to <code>form.html</code></li>
+            </ul>
+            
+            <h4>2. Update Links in ALL Files:</h4>
+            <p>Search and replace these in all your HTML files:</p>
+            <div class="code-block">
+// In navigation links:
+href="index.html" → href="form.html"
+href="home.html" → href="index.html" or href="/"
+
+// In agent-portal.html, update:
+const BASE_URL = 'https://nolossform.com/form.html';
+            </div>
+            
+            <h4>3. Create CNAME File:</h4>
+            <p>Create a new file called <code>CNAME</code> (no extension) with just this content:</p>
+            <div class="code-block">nolossform.com</div>
+        </div>
+        
+        <div class="file-list">
+            <h3>✅ Final File Structure for GitHub:</h3>
+            <ul style="list-style: none; font-family: monospace;">
+                <li>📄 index.html (landing page - was home.html)</li>
+                <li>📄 form.html (Statement of No Loss - was index.html)</li>
+                <li>📄 agent-portal.html</li>
+                <li>📄 agency-signup.html</li>
+                <li>📄 dashboard.html</li>
+                <li>📄 setup-config.html</li>
+                <li>📄 system-test.html</li>
+                <li>📄 CNAME (contains: nolossform.com)</li>
+                <li>📄 README.md</li>
+            </ul>
+        </div>
+        
+        <div class="success">
+            <h3>✅ Quick GitHub Upload Process:</h3>
+            <ol>
+                <li>Go to <a href="https://github.com/new" target="_blank">github.com/new</a></li>
+                <li>Create repository named: <strong>nolossform</strong></li>
+                <li>Make it <strong>Public</strong></li>
+                <li>DON'T initialize with README</li>
+                <li>Click "uploading an existing file"</li>
+                <li>Drag and drop ALL your files</li>
+                <li>Commit changes</li>
+                <li>Go to Settings → Pages</li>
+                <li>Select source: main branch, root folder</li>
+                <li>Save!</li>
+            </ol>
+        </div>
+        
+        <div class="warning">
+            <h3>🔍 Don't Forget to Update:</h3>
+            <ul>
+                <li>✅ Script URL in all files (your Google Apps Script URL)</li>
+                <li>✅ BASE_URL in agent-portal.html</li>
+                <li>✅ All navigation links to use new file names</li>
+                <li>✅ Test all links after deployment</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="window.open('https://github.com/new', '_blank')">Create GitHub Repository</button>
+            <button class="btn-primary" onclick="testChecklist()">Run Pre-Flight Check</button>
+        </div>
+        
+        <div id="checklistResults" style="display: none; margin-top: 30px;">
+            <h3>Pre-Flight Checklist:</h3>
+            <div id="checklistItems"></div>
+        </div>
+    </div>
+    
+    <script>
+        function testChecklist() {
+            const checklistItems = [
+                { item: "Files renamed (home.html → index.html, index.html → form.html)", id: "rename" },
+                { item: "CNAME file created with 'nolossform.com'", id: "cname" },
+                { item: "Navigation links updated in all files", id: "links" },
+                { item: "BASE_URL updated in agent-portal.html", id: "baseurl" },
+                { item: "Script URL verified in all files", id: "scripturl" },
+                { item: "GitHub repository created", id: "github" },
+                { item: "Repository is set to Public", id: "public" }
+            ];
+            
+            let html = '<div class="file-list">';
+            checklistItems.forEach(item => {
+                html += `
+                    <div class="file-item">
+                        <label style="cursor: pointer;">
+                            <input type="checkbox" id="${item.id}" style="margin-right: 10px;">
+                            ${item.item}
+                        </label>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            html += '<div style="text-align: center; margin-top: 20px;">';
+            html += '<button onclick="checkCompletion()">Verify Readiness</button>';
+            html += '</div>';
+            
+            document.getElementById('checklistItems').innerHTML = html;
+            document.getElementById('checklistResults').style.display = 'block';
+        }
+        
+        function checkCompletion() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let allChecked = true;
+            
+            checkboxes.forEach(cb => {
+                if (!cb.checked) allChecked = false;
+            });
+            
+            if (allChecked) {
+                alert('✅ Perfect! You\'re ready to deploy to GitHub Pages!\n\nNext steps:\n1. Upload your files to GitHub\n2. Enable GitHub Pages in Settings\n3. Your site will be live at nolossform.com!');
+            } else {
+                alert('⚠️ Please complete all checklist items before deploying.\n\nEach item is critical for successful deployment.');
+            }
+        }
+    </script>
+</body>
+</html>

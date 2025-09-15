@@ -470,39 +470,11 @@
     </div>
     
     <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if user is logged in
-            if (localStorage.getItem('agencyLoggedIn') !== 'true') {
-                alert('Please login to access the dashboard');
-                window.location.href = '/login.html';
-                return;
-            }
-
-            // Add logout functionality to nav menu
-            const navMenu = document.querySelector('.nav-menu');
-            if (navMenu) {
-                const logoutBtn = document.createElement('li');
-                logoutBtn.innerHTML = '<a href="#" onclick="logout()">🚪 Logout</a>';
-                navMenu.appendChild(logoutBtn);
-            }
-
-            // Load dashboard data
-            loadDashboardData();
-        });
-
-        // Logout function
-        function logout() {
-            localStorage.removeItem('agencyLoggedIn');
-            localStorage.removeItem('agencyEmail');
-            window.location.href = '/login.html';
-        }
-
         // Toggle sidebar on mobile
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
         }
-
+        
         // Load dashboard data
         function loadDashboardData() {
             // This would normally fetch from your API
@@ -580,6 +552,9 @@
                 drawChart();
             });
         });
+        
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
         
         // Auto-refresh every 30 seconds
         setInterval(updateStats, 30000);

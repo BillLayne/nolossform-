@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoLossForm System Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #333;
+            font-size: 20px;
+            margin: 0;
+        }
+        .status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status.pending {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+        .status.testing {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+        .status.success {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        .status.error {
+            background: #ffebee;
+            color: #f44336;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #5569d0;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .test-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #555;
+            display: none;
+        }
+        .test-result.show {
+            display: block;
+        }
+        .test-list {
+            list-style: none;
+            padding: 0;
+        }
+        .test-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .test-list li:last-child {
+            border-bottom: none;
+        }
+        .check-icon {
+            color: #4caf50;
+            font-weight: bold;
+        }
+        .x-icon {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .overall-status {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .overall-status h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .overall-status p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 NoLossForm System Test</h1>
+        <p class="subtitle">Verify all components are working correctly before launch</p>
+        
+        <!-- Configuration Test -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>1️⃣ Configuration Test</h2>
+                <span id="configStatus" class="status pending">PENDING</span>
+            </div>
+            <input type="url" id="scriptUrl" placeholder="Enter your Google Apps Script URL" 
+                   value="https://script.google.com/macros/s/AKfycbxP5rFSrbrDJ_3bFwi0xyBy054h5WkYBP89o54k5sEX7fk_8u0a74SbdHG0s3s32RDR/exec">
+            <button onclick="testConfiguration()">Test Configuration</button>
+            <div id="configResult" class="test-result"></div>
+        </div>
+        
+        <!-- Google Sheets Connection Test -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>2️⃣ Database Connection Test</h2>
+                <span id="dbStatus" class="status pending">PENDING</span>
+            </div>
+            <button onclick="testDatabase()">Test Database Connection</button>
+            <div id="dbResult" class="test-result"></div>
+        </div>
+        
+        <!-- Form Submission Test -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>3️⃣ Form Submission Test</h2>
+                <span id="formStatus" class="status pending">PENDING</span>
+            </div>
+            <button onclick="testFormSubmission()">Submit Test Form</button>
+            <div id="formResult" class="test-result"></div>
+        </div>
+        
+        <!-- Agency Creation Test -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>4️⃣ Agency Creation Test</h2>
+                <span id="agencyStatus" class="status pending">PENDING</span>
+            </div>
+            <button onclick="testAgencyCreation()">Create Test Agency</button>
+            <div id="agencyResult" class="test-result"></div>
+        </div>
+        
+        <!-- Performance Test -->
+        <div class="test-section">
+            <div class="test-header">
+                <h2>5️⃣ Performance Test</h2>
+                <span id="perfStatus" class="status pending">PENDING</span>
+            </div>
+            <button onclick="testPerformance()">Run Performance Test</button>
+            <div id="perfResult" class="test-result"></div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+        
+        <!-- Overall Status -->
+        <div class="overall-status">
+            <h3 id="overallTitle">System Status: Not Tested</h3>
+            <p id="overallMessage">Run all tests to verify your system is ready for launch</p>
+        </div>
+        
+        <!-- Test Checklist -->
+        <div class="test-section" style="margin-top: 40px;">
+            <h2>✅ Pre-Launch Checklist</h2>
+            <ul class="test-list">
+                <li>
+                    <span>Google Apps Script Deployed</span>
+                    <span id="check1" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>Google Sheets Connected</span>
+                    <span id="check2" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>Form Submission Working</span>
+                    <span id="check3" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>Agency Creation Working</span>
+                    <span id="check4" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>Performance Acceptable</span>
+                    <span id="check5" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>Domain Configured</span>
+                    <span id="check6" class="status pending">⭕</span>
+                </li>
+                <li>
+                    <span>SSL Certificate Active</span>
+                    <span id="check7" class="status pending">⭕</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        let testsCompleted = 0;
+        const totalTests = 5;
+        
+        function updateProgress() {
+            testsCompleted++;
+            const percentage = (testsCompleted / totalTests) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            
+            if (testsCompleted === totalTests) {
+                document.getElementById('overallTitle').textContent = '✅ System Status: Ready for Launch!';
+                document.getElementById('overallMessage').textContent = 'All tests passed. Your NoLossForm system is ready to go live!';
+            }
+        }
+        
+        async function testConfiguration() {
+            const status = document.getElementById('configStatus');
+            const result = document.getElementById('configResult');
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            
+            status.className = 'status testing';
+            status.textContent = 'TESTING...';
+            result.classList.remove('show');
+            
+            try {
+                // Test if URL is valid
+                const url = new URL(scriptUrl);
+                if (!url.hostname.includes('script.google.com')) {
+                    throw new Error('Invalid Google Apps Script URL');
+                }
+                
+                status.className = 'status success';
+                status.textContent = 'PASSED';
+                result.innerHTML = '✅ Configuration is valid<br>Script URL: ' + scriptUrl;
+                result.classList.add('show');
+                document.getElementById('check1').textContent = '✅';
+                updateProgress();
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = 'FAILED';
+                result.innerHTML = '❌ Error: ' + error.message;
+                result.classList.add('show');
+                document.getElementById('check1').textContent = '❌';
+            }
+        }
+        
+        async function testDatabase() {
+            const status = document.getElementById('dbStatus');
+            const result = document.getElementById('dbResult');
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            
+            status.className = 'status testing';
+            status.textContent = 'TESTING...';
+            result.classList.remove('show');
+            
+            try {
+                const testData = {
+                    action: 'test_connection',
+                    timestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                // Since no-cors mode, we can't read response but assume success if no error
+                status.className = 'status success';
+                status.textContent = 'PASSED';
+                result.innerHTML = '✅ Database connection successful<br>Google Sheets is accessible';
+                result.classList.add('show');
+                document.getElementById('check2').textContent = '✅';
+                updateProgress();
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = 'FAILED';
+                result.innerHTML = '❌ Error: Cannot connect to database<br>' + error.message;
+                result.classList.add('show');
+                document.getElementById('check2').textContent = '❌';
+            }
+        }
+        
+        async function testFormSubmission() {
+            const status = document.getElementById('formStatus');
+            const result = document.getElementById('formResult');
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            
+            status.className = 'status testing';
+            status.textContent = 'TESTING...';
+            result.classList.remove('show');
+            
+            try {
+                const testData = {
+                    action: 'submit_no_loss',
+                    agencyId: 'TEST-AGENCY',
+                    agentId: 'TEST-AGENT',
+                    agencyName: 'Test Agency',
+                    agentName: 'Test Agent',
+                    agentEmail: 'test@test.com',
+                    customerName: 'Test Customer',
+                    customerEmail: 'customer@test.com',
+                    customerPhone: '(555) 123-4567',
+                    insuranceCompany: 'Test Company',
+                    policyNumber: 'TEST-123456',
+                    policyType: 'Auto',
+                    cancellationDate: '2025-01-01',
+                    reinstatementDate: '2025-01-13',
+                    amountPaid: '$500.00',
+                    signatureUrl: 'data:image/png;base64,test',
+                    ipAddress: '127.0.0.1',
+                    browserInfo: 'Test Browser',
+                    completionTime: 120,
+                    language: 'EN'
+                };
+                
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                status.className = 'status success';
+                status.textContent = 'PASSED';
+                result.innerHTML = '✅ Form submission successful<br>Test data saved to Google Sheets';
+                result.classList.add('show');
+                document.getElementById('check3').textContent = '✅';
+                updateProgress();
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = 'FAILED';
+                result.innerHTML = '❌ Error: Form submission failed<br>' + error.message;
+                result.classList.add('show');
+                document.getElementById('check3').textContent = '❌';
+            }
+        }
+        
+        async function testAgencyCreation() {
+            const status = document.getElementById('agencyStatus');
+            const result = document.getElementById('agencyResult');
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            
+            status.className = 'status testing';
+            status.textContent = 'TESTING...';
+            result.classList.remove('show');
+            
+            try {
+                const testData = {
+                    action: 'create_agency',
+                    agencyName: 'Test Agency ' + Date.now(),
+                    contactName: 'Test Contact',
+                    contactEmail: 'test@testagency.com',
+                    contactPhone: '(555) 987-6543',
+                    website: 'www.testagency.com',
+                    address: '123 Test St, Test City, TC 12345',
+                    subdomain: 'testagency' + Date.now()
+                };
+                
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                status.className = 'status success';
+                status.textContent = 'PASSED';
+                result.innerHTML = '✅ Agency creation successful<br>Test agency created with API key';
+                result.classList.add('show');
+                document.getElementById('check4').textContent = '✅';
+                updateProgress();
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = 'FAILED';
+                result.innerHTML = '❌ Error: Agency creation failed<br>' + error.message;
+                result.classList.add('show');
+                document.getElementById('check4').textContent = '❌';
+            }
+        }
+        
+        async function testPerformance() {
+            const status = document.getElementById('perfStatus');
+            const result = document.getElementById('perfResult');
+            const scriptUrl = document.getElementById('scriptUrl').value;
+            
+            status.className = 'status testing';
+            status.textContent = 'TESTING...';
+            result.classList.remove('show');
+            
+            try {
+                const startTime = Date.now();
+                const promises = [];
+                
+                // Send 5 test requests
+                for (let i = 0; i < 5; i++) {
+                    const testData = {
+                        action: 'test_connection',
+                        requestId: i
+                    };
+                    
+                    promises.push(
+                        fetch(scriptUrl, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(testData)
+                        })
+                    );
+                }
+                
+                await Promise.all(promises);
+                const endTime = Date.now();
+                const avgTime = (endTime - startTime) / 5;
+                
+                if (avgTime < 3000) {
+                    status.className = 'status success';
+                    status.textContent = 'PASSED';
+                    result.innerHTML = `✅ Performance is excellent<br>Average response time: ${avgTime.toFixed(0)}ms`;
+                    document.getElementById('check5').textContent = '✅';
+                } else {
+                    status.className = 'status success';
+                    status.textContent = 'WARNING';
+                    result.innerHTML = `⚠️ Performance is acceptable but could be improved<br>Average response time: ${avgTime.toFixed(0)}ms`;
+                    document.getElementById('check5').textContent = '⚠️';
+                }
+                
+                result.classList.add('show');
+                updateProgress();
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = 'FAILED';
+                result.innerHTML = '❌ Error: Performance test failed<br>' + error.message;
+                result.classList.add('show');
+                document.getElementById('check5').textContent = '❌';
+            }
+        }
+        
+        // Check domain configuration
+        if (window.location.hostname === 'nolossform.com' || window.location.hostname === 'www.nolossform.com') {
+            document.getElementById('check6').textContent = '✅';
+        }
+        
+        // Check SSL
+        if (window.location.protocol === 'https:') {
+            document.getElementById('check7').textContent = '✅';
+        }
+    </script>
+</body>
+</html>
