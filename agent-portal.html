@@ -248,19 +248,19 @@
             </div>
             
             <div class="form-group">
-                <label for="propertyAddress">Property Address</label>
-                <input type="text" id="propertyAddress" placeholder="123 Main Street">
+                <label for="propertyAddress">Property Address <span style="color: red;">*</span></label>
+                <input type="text" id="propertyAddress" placeholder="123 Main Street" required>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City">
+                    <label for="city">City <span style="color: red;">*</span></label>
+                    <input type="text" id="city" placeholder="City" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="state">State</label>
-                    <select id="state">
+                    <label for="state">State <span style="color: red;">*</span></label>
+                    <select id="state" required>
                         <option value="">Select State</option>
                         <option value="NC">North Carolina</option>
                         <option value="SC">South Carolina</option>
@@ -282,8 +282,8 @@
             </div>
             
             <div class="form-group">
-                <label for="zipCode">ZIP Code</label>
-                <input type="text" id="zipCode" placeholder="12345" maxlength="5">
+                <label for="zipCode">ZIP Code <span style="color: red;">*</span></label>
+                <input type="text" id="zipCode" placeholder="12345" maxlength="5" required>
             </div>
             
             <h2 class="section-title">Policy Information</h2>
@@ -358,8 +358,8 @@
             </div>
             
             <div class="form-group">
-                <label for="agencyAddress">Agency Address</label>
-                <input type="text" id="agencyAddress" placeholder="123 Main St, City ST 12345">
+                <label for="agencyAddress">Agency Address <span style="color: red;">*</span></label>
+                <input type="text" id="agencyAddress" placeholder="123 Main St, City ST 12345" required>
             </div>
             
             <div class="form-row">
@@ -475,10 +475,11 @@
             params.append('insuredName', insuredName);  // This was missing!
             if (email) params.append('email', email);
             if (phone) params.append('phone', phone);
-            if (propertyAddress) params.append('propertyAddress', propertyAddress);
-            if (city) params.append('city', city);
-            if (state) params.append('state', state);
-            if (zipCode) params.append('zipCode', zipCode);
+            // Always include address fields even if empty
+            params.append('propertyAddress', propertyAddress || '');
+            params.append('city', city || '');
+            params.append('state', state || '');
+            params.append('zipCode', zipCode || '');
             params.append('insuranceCompany', insuranceCompany);  // This was missing!
             params.append('policyNumber', policyNumber);
             params.append('policyType', policyType);
@@ -486,9 +487,10 @@
             params.append('reinstatementDate', reinstatementDate);  // This was missing!
             if (amountPaid) params.append('amountPaid', amountPaid);  // This was missing!
             params.append('agencyName', agencyName);
-            if (agencyAddress) params.append('agencyAddress', agencyAddress);
-            if (agencyPhone) params.append('agencyPhone', agencyPhone);
-            if (agencyEmail) params.append('agencyEmail', agencyEmail);
+            // Always include agency fields
+            params.append('agencyAddress', agencyAddress || '');
+            params.append('agencyPhone', agencyPhone || '');
+            params.append('agencyEmail', agencyEmail || '');
             if (agentName) params.append('agentName', agentName);
             if (agentEmail) params.append('agentEmail', agentEmail);
             
