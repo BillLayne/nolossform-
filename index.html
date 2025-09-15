@@ -69,6 +69,13 @@
             position: relative;
         }
         
+        .agency-logo {
+            max-width: 200px;
+            max-height: 80px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
         .header h1 {
             font-size: 28px;
             margin-bottom: 15px;
@@ -400,9 +407,24 @@
             border-top: 1px solid #e0e0e0;
         }
         
-        .footer-logo {
-            max-width: 120px;
-            margin-bottom: 10px;
+        .footer-agency {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .footer-contact {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .powered-by {
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 12px;
+            color: #999;
+            margin-top: 15px;
         }
         
         /* Mobile Optimizations */
@@ -421,21 +443,29 @@
                 <button class="lang-btn active" onclick="setLanguage('en')">English</button>
                 <button class="lang-btn" onclick="setLanguage('es')">Español</button>
             </div>
-            <h1 id="agencyName">Loading...</h1>
-            <h2 data-translate="formTitle">Statement of No Loss</h2>
-            <p data-translate="formDescription">Policy Reinstatement Documentation</p>
+            <!-- Agency Logo (if provided via URL) -->
+            <img id="agencyLogo" class="agency-logo" alt="Agency Logo">
+            <!-- Dynamic Agency Name -->
+            <h1 id="agencyName">Statement of No Loss</h1>
+            <h2 data-translate="formTitle">Policy Reinstatement Form</h2>
+            <p data-translate="formDescription">Electronic Signature Authorization</p>
+            <!-- Agent Contact Info (if provided) -->
             <div class="agent-info" id="agentInfo">
-                <p><strong>Agent Contact:</strong></p>
+                <p id="agentContactTitle"><strong>Your Agent:</strong></p>
+                <p id="agentName"></p>
                 <p id="agentEmail"></p>
                 <p id="agentPhone"></p>
             </div>
         </div>
         
         <form id="noLossForm" class="form-container">
-            <!-- Hidden fields for agency info -->
+            <!-- Hidden fields for agency/agent info -->
             <input type="hidden" id="hiddenAgencyName" name="agencyName">
             <input type="hidden" id="hiddenAgencyEmail" name="agencyEmail">
             <input type="hidden" id="hiddenAgencyPhone" name="agencyPhone">
+            <input type="hidden" id="hiddenAgentName" name="agentName">
+            <input type="hidden" id="hiddenAgentEmail" name="agentEmail">
+            <input type="hidden" id="hiddenAgentPhone" name="agentPhone">
             
             <!-- Policyholder Information -->
             <div class="form-section">
@@ -481,11 +511,16 @@
                         </label>
                         <select id="state" name="state" required>
                             <option value="">Select State</option>
-                            <option value="NC" selected>North Carolina</option>
+                            <option value="NC">North Carolina</option>
                             <option value="SC">South Carolina</option>
                             <option value="VA">Virginia</option>
                             <option value="GA">Georgia</option>
                             <option value="TN">Tennessee</option>
+                            <option value="FL">Florida</option>
+                            <option value="AL">Alabama</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="TX">Texas</option>
                         </select>
                     </div>
                     
@@ -605,9 +640,14 @@
         </form>
         
         <div class="footer">
-            <p style="color: #666; font-size: 14px;">
+            <!-- Dynamic Agency Footer -->
+            <div id="agencyFooter">
+                <div class="footer-agency" id="footerAgencyName"></div>
+                <div class="footer-contact" id="footerAgencyContact"></div>
+            </div>
+            <div class="powered-by">
                 Powered by NoLossForm.com
-            </p>
+            </div>
         </div>
     </div>
     
@@ -632,8 +672,8 @@
         // Translation dictionary
         const translations = {
             en: {
-                formTitle: "Statement of No Loss",
-                formDescription: "Policy Reinstatement Documentation",
+                formTitle: "Policy Reinstatement Form",
+                formDescription: "Electronic Signature Authorization",
                 policyholderInfo: "Policyholder Information",
                 insuredName: "Insured Name",
                 policyNumber: "Policy Number",
@@ -662,8 +702,8 @@
                 closeButton: "Close"
             },
             es: {
-                formTitle: "Declaración de No Pérdida",
-                formDescription: "Documentación de Restablecimiento de Póliza",
+                formTitle: "Formulario de Restablecimiento de Póliza",
+                formDescription: "Autorización de Firma Electrónica",
                 policyholderInfo: "Información del Asegurado",
                 insuredName: "Nombre del Asegurado",
                 policyNumber: "Número de Póliza",
@@ -700,40 +740,85 @@
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Get agency information from URL parameters
+            // Extract all agency and agent information from URL
             const agencyName = urlParams.get('agencyName');
             const agencyEmail = urlParams.get('agencyEmail');
             const agencyPhone = urlParams.get('agencyPhone');
+            const agentName = urlParams.get('agentName');
+            const agentEmail = urlParams.get('agentEmail');
+            const agentPhone = urlParams.get('agentPhone');
+            const agencyLogo = urlParams.get('agencyLogo');
             
             // Update header with agency information
             if (agencyName) {
+                // Display agency name in header
                 document.getElementById('agencyName').textContent = decodeURIComponent(agencyName);
                 document.getElementById('hiddenAgencyName').value = decodeURIComponent(agencyName);
                 
+                // Display agency logo if provided
+                if (agencyLogo) {
+                    const logoElement = document.getElementById('agencyLogo');
+                    logoElement.src = decodeURIComponent(agencyLogo);
+                    logoElement.style.display = 'block';
+                    // Adjust header padding if logo is shown
+                    document.querySelector('.header h1').style.paddingTop = '0';
+                }
+                
                 // Show agent contact info if provided
-                if (agencyEmail || agencyPhone) {
+                if (agentName || agentEmail || agentPhone) {
                     const agentInfoDiv = document.getElementById('agentInfo');
                     agentInfoDiv.style.display = 'block';
                     
-                    if (agencyEmail) {
-                        document.getElementById('agentEmail').textContent = decodeURIComponent(agencyEmail);
-                        document.getElementById('hiddenAgencyEmail').value = decodeURIComponent(agencyEmail);
+                    if (agentName) {
+                        document.getElementById('agentName').textContent = decodeURIComponent(agentName);
+                        document.getElementById('hiddenAgentName').value = decodeURIComponent(agentName);
                     }
                     
-                    if (agencyPhone) {
-                        document.getElementById('agentPhone').textContent = decodeURIComponent(agencyPhone);
-                        document.getElementById('hiddenAgencyPhone').value = decodeURIComponent(agencyPhone);
+                    if (agentEmail) {
+                        document.getElementById('agentEmail').textContent = '✉️ ' + decodeURIComponent(agentEmail);
+                        document.getElementById('hiddenAgentEmail').value = decodeURIComponent(agentEmail);
+                    }
+                    
+                    if (agentPhone) {
+                        document.getElementById('agentPhone').textContent = '📞 ' + decodeURIComponent(agentPhone);
+                        document.getElementById('hiddenAgentPhone').value = decodeURIComponent(agentPhone);
                     }
                 }
+                
+                // Update footer with agency information
+                document.getElementById('footerAgencyName').textContent = decodeURIComponent(agencyName);
+                
+                let footerContact = '';
+                if (agencyEmail) {
+                    footerContact += decodeURIComponent(agencyEmail);
+                    document.getElementById('hiddenAgencyEmail').value = decodeURIComponent(agencyEmail);
+                }
+                if (agencyPhone) {
+                    if (footerContact) footerContact += ' | ';
+                    footerContact += decodeURIComponent(agencyPhone);
+                    document.getElementById('hiddenAgencyPhone').value = decodeURIComponent(agencyPhone);
+                }
+                if (footerContact) {
+                    document.getElementById('footerAgencyContact').textContent = footerContact;
+                }
             } else {
-                // Default to Bill Layne Insurance if no agency specified
-                document.getElementById('agencyName').textContent = 'Bill Layne Insurance Agency';
-                document.getElementById('hiddenAgencyName').value = 'Bill Layne Insurance Agency';
+                // No agency specified - show generic branding
+                document.getElementById('agencyName').textContent = 'Statement of No Loss';
+                document.getElementById('footerAgencyName').textContent = 'NoLossForm.com';
+                document.getElementById('footerAgencyContact').textContent = 'Automated Insurance Documentation System';
+                
+                // Store as direct submission
+                document.getElementById('hiddenAgencyName').value = 'Direct Submission';
             }
             
-            // Pre-fill form fields from URL parameters
-            const fields = ['insuredName', 'policyNumber', 'propertyAddress', 'city', 'state', 'zipCode', 'email', 'phone'];
-            fields.forEach(field => {
+            // Pre-fill customer form fields from URL parameters
+            const customerFields = [
+                'insuredName', 'policyNumber', 'propertyAddress', 
+                'city', 'state', 'zipCode', 'email', 'phone',
+                'lapseStartDate', 'lapseEndDate'
+            ];
+            
+            customerFields.forEach(field => {
                 const value = urlParams.get(field);
                 if (value) {
                     const element = document.getElementById(field);
@@ -768,6 +853,13 @@
                     element.textContent = translations[lang][key];
                 }
             });
+            
+            // Update agent contact title based on language
+            if (currentLanguage === 'es') {
+                document.getElementById('agentContactTitle').innerHTML = '<strong>Su Agente:</strong>';
+            } else {
+                document.getElementById('agentContactTitle').innerHTML = '<strong>Your Agent:</strong>';
+            }
         }
         
         // Initialize signature pad
