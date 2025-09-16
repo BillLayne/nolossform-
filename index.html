@@ -129,18 +129,18 @@
             box-shadow: 0 10px 20px rgba(102,126,234,0.3);
         }
         
-        /* Hero Section */
+        /* Hero Section - FIXED POSITIONING */
         .hero {
-            margin-top: 80px;
-            min-height: 90vh;
+            margin-top: 70px; /* Reduced from 80px */
+            min-height: calc(100vh - 70px); /* Adjusted to account for navbar */
             background-image: url('https://github.com/BillLayne/bill-layne-images/blob/main/nolossform/hero%20background.788Z.webp?raw=true');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
             display: flex;
-            align-items: flex-start;
-            padding-top: 3rem;
+            align-items: center; /* Changed from flex-start to center */
+            padding: 2rem 0; /* Reduced from padding-top: 3rem */
         }
         
         .hero::before {
@@ -157,11 +157,12 @@
             position: relative;
             max-width: 1280px;
             margin: 0 auto;
-            padding: 2rem 2rem 4rem 2rem;
+            padding: 0 2rem; /* Simplified padding */
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            width: 100%;
         }
         
         .hero-text {
@@ -224,6 +225,8 @@
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            max-height: 85vh; /* Add max height to prevent overflow */
+            overflow-y: auto; /* Allow scrolling if needed */
         }
         
         .demo-header {
@@ -736,6 +739,10 @@
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
         }
         
         @media (max-width: 768px) {
@@ -772,12 +779,26 @@
                 text-align: center;
             }
             
+            .hero {
+                min-height: auto; /* Allow hero to be smaller on mobile */
+            }
+            
             .hero-content {
                 grid-template-columns: 1fr;
+                padding: 2rem 1rem; /* Reduced padding on mobile */
             }
             
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 2rem; /* Smaller font size on mobile */
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .demo-card {
+                padding: 1.5rem; /* Reduced padding on mobile */
+                max-height: none; /* Remove max-height on mobile */
             }
             
             .process-grid {
@@ -798,6 +819,10 @@
             
             .cta-buttons {
                 flex-direction: column;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
         
