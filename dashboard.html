@@ -470,6 +470,9 @@
     </div>
     
     <script>
+        // Add this as the FIRST line inside the <script> tag
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxP5rFSrbrDJ_3bFwi0xyBy054h5WkYBP89o54k5sEX7fk_8u0a74SbdHG0s3s32RDR/exec';
+
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             // Check if user is logged in
@@ -503,18 +506,130 @@
             document.getElementById('sidebar').classList.toggle('open');
         }
 
-        // Load dashboard data
-        function loadDashboardData() {
-            // This would normally fetch from your API
-            const agencyData = localStorage.getItem('agencyData');
-            if (agencyData) {
-                const data = JSON.parse(agencyData);
-                document.getElementById('agencyName').textContent = data.agencyName || 'Your Agency';
+        // REPLACE the existing loadDashboardData function with this enhanced version
+        async function loadDashboardData() {
+            // Get agency profile from localStorage
+            const agencyProfile = JSON.parse(localStorage.getItem('agencyProfile') || localStorage.getItem('agencyData') || '{}');
+
+            if (!agencyProfile.agencyName) {
+                // No agency data - keep existing behavior
+                document.getElementById('agencyName').textContent = 'Your Agency';
+                updateStats(); // Use mock data
+                drawChart();
+                return;
             }
-            
-            // Update stats (mock data for now)
-            updateStats();
+
+            // Update agency name in header
+            document.getElementById('agencyName').textContent = agencyProfile.agencyName;
+
+            // Update user initials in avatar
+            if (agencyProfile.firstName && agencyProfile.lastName) {
+                const initials = agencyProfile.firstName[0] + agencyProfile.lastName[0];
+                document.querySelector('.user-avatar').textContent = initials.toUpperCase();
+            }
+
+            try {
+                // Show loading state
+                document.getElementById('totalSubmissions').textContent = 'Loading...';
+                document.getElementById('monthlySubmissions').textContent = '...';
+                document.getElementById('activeAgents').textContent = '...';
+                document.getElementById('completionRate').textContent = '...';
+
+                // Fetch real data from Google Apps Script
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'get_dashboard_data',
+                        agencyName: agencyProfile.agencyName
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        // Update stats with real data
+                        document.getElementById('totalSubmissions').textContent = result.stats.total.toLocaleString();
+                        document.getElementById('monthlySubmissions').textContent = result.stats.thisMonth;
+                        document.getElementById('completionRate').textContent = result.stats.completionRate + '%';
+
+                        // Keep active agents as is (not tracked in submissions)
+                        document.getElementById('activeAgents').textContent = agencyProfile.agents || '1';
+
+                        // Update recent submissions table
+                        updateSubmissionsTable(result.submissions);
+
+                        // Draw chart with real data
+                        drawChart();
+                    } else {
+                        // Error from backend - use mock data
+                        console.error('Backend error:', result.message);
+                        updateStats();
+                    }
+                } else {
+                    // Network error - use mock data
+                    console.error('Network error');
+                    updateStats();
+                }
+            } catch (error) {
+                // Any error - fallback to mock data
+                console.error('Dashboard load error:', error);
+                updateStats(); // Use existing mock data function
+            }
+
             drawChart();
+        }
+
+        // ADD this new function after loadDashboardData
+        function updateSubmissionsTable(submissions) {
+            const tbody = document.getElementById('recentSubmissions');
+
+            if (!submissions || submissions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #999;">
+                            No submissions yet. Generate your first Statement of No Loss link!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Clear existing rows
+            tbody.innerHTML = '';
+
+            // Add real submission data
+            submissions.forEach(sub => {
+                const row = document.createElement('tr');
+                const date = new Date(sub.timestamp);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${sub.customerName}</td>
+                    <td>${sub.policyNumber}</td>
+                    <td>${sub.agentName}</td>
+                    <td><span class="status-badge ${sub.status.toLowerCase()}">${sub.status}</span></td>
+                    <td>
+                        <button class="action-btn" onclick="viewSubmission('${sub.confirmationNumber}')">
+                            View
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // ADD this helper function for viewing submissions
+        function viewSubmission(confirmationNumber) {
+            alert('Confirmation #: ' + confirmationNumber + '\n\nView functionality coming soon!');
         }
         
         function updateStats() {
@@ -581,8 +696,13 @@
             });
         });
         
-        // Auto-refresh every 30 seconds
-        setInterval(updateStats, 30000);
+        // Auto-refresh every 30 seconds (only if we have agency data)
+        setInterval(() => {
+            const agencyProfile = localStorage.getItem('agencyProfile') || localStorage.getItem('agencyData');
+            if (agencyProfile) {
+                loadDashboardData(); // This will now fetch real data
+            }
+        }, 30000);
     </script>
 </body>
 </html>
