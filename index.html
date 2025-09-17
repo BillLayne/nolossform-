@@ -422,7 +422,31 @@
         /* Stats Section */
         .stats {
             padding: 5rem 2rem;
-            background: white;
+            background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(102,126,234,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .stats::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(118,75,162,0.05) 0%, transparent 70%);
+            border-radius: 50%;
         }
         
         .stats-grid {
@@ -431,11 +455,46 @@
             gap: 2rem;
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         .stat-card {
             text-align: center;
             padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.15);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
         }
         
         .stat-number {
@@ -445,11 +504,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
+            line-height: 1;
         }
         
         .stat-label {
             font-size: 1rem;
             color: var(--text-light);
+            font-weight: 500;
         }
         
         /* Features Grid */
@@ -825,6 +886,117 @@
                 max-height: none; /* Remove max-height on mobile */
             }
             
+            /* Enhanced Mobile Stats Section */
+            .stats {
+                padding: 3rem 0;
+                background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            }
+            
+            .stats-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 1rem;
+                padding: 0 1rem 1rem 1rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .stats-grid::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .stat-card {
+                flex: 0 0 45%;
+                scroll-snap-align: start;
+                background: white;
+                border-radius: 20px;
+                padding: 1.5rem;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+                border: 1px solid rgba(102,126,234,0.1);
+                position: relative;
+                transform: scale(1);
+                transition: all 0.3s ease;
+                min-width: 160px;
+            }
+            
+            .stat-card:active {
+                transform: scale(0.98);
+            }
+            
+            .stat-card:first-child {
+                margin-left: 0;
+            }
+            
+            .stat-card::before {
+                height: 3px;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .stat-card:active::before {
+                opacity: 1;
+            }
+            
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+                background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+                margin-bottom: 0.75rem;
+                animation: pulse 2s infinite;
+            }
+            
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+            
+            .stat-number {
+                font-size: 2.25rem;
+                margin-bottom: 0.25rem;
+                font-weight: 900;
+                letter-spacing: -0.02em;
+            }
+            
+            .stat-label {
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: var(--text-light);
+                letter-spacing: 0.01em;
+            }
+            
+            /* Add visual scroll indicator dots for mobile */
+            .stats-scroll-indicator {
+                display: flex;
+                justify-content: center;
+                gap: 0.5rem;
+                margin-top: 1rem;
+                padding: 0 1rem;
+            }
+            
+            .scroll-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #d1d5db;
+                transition: all 0.3s ease;
+            }
+            
+            .scroll-dot.active {
+                width: 24px;
+                border-radius: 4px;
+                background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            }
+            
             .process-grid {
                 grid-template-columns: 1fr;
             }
@@ -843,10 +1015,6 @@
             
             .cta-buttons {
                 flex-direction: column;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
             }
         }
         
@@ -1000,23 +1168,31 @@
     <!-- Stats Section -->
     <section class="stats">
         <div class="section-container">
-            <div class="stats-grid">
+            <div class="stats-grid" id="statsGrid">
                 <div class="stat-card">
+                    <div class="stat-icon">🏢</div>
                     <div class="stat-number">500+</div>
                     <div class="stat-label">Active Agencies</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon">📄</div>
                     <div class="stat-number">50K+</div>
                     <div class="stat-label">Forms Processed</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon">✅</div>
                     <div class="stat-number">95%</div>
                     <div class="stat-label">Completion Rate</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
                     <div class="stat-number">2min</div>
                     <div class="stat-label">Average Time</div>
                 </div>
+            </div>
+            <div class="stats-scroll-indicator" id="scrollIndicator" style="display: none;">
+                <span class="scroll-dot active"></span>
+                <span class="scroll-dot"></span>
             </div>
         </div>
     </section>
@@ -1259,6 +1435,27 @@
             });
         }
 
+        // Stats scroll indicator for mobile
+        const statsGrid = document.getElementById('statsGrid');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        
+        if (window.innerWidth <= 768 && statsGrid && scrollIndicator) {
+            scrollIndicator.style.display = 'flex';
+            
+            statsGrid.addEventListener('scroll', () => {
+                const scrollPercentage = statsGrid.scrollLeft / (statsGrid.scrollWidth - statsGrid.clientWidth);
+                const dots = scrollIndicator.querySelectorAll('.scroll-dot');
+                
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                if (scrollPercentage < 0.5) {
+                    dots[0].classList.add('active');
+                } else {
+                    dots[1].classList.add('active');
+                }
+            });
+        }
+
         // Smooth scroll for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1362,12 +1559,41 @@
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
+                    
+                    // Animate stat numbers
+                    if (entry.target.classList.contains('stat-card')) {
+                        const numberElement = entry.target.querySelector('.stat-number');
+                        if (numberElement && !numberElement.classList.contains('animated')) {
+                            animateStatNumber(numberElement);
+                            numberElement.classList.add('animated');
+                        }
+                    }
                 }
             });
         }, observerOptions);
 
-        // Observe all feature cards
-        document.querySelectorAll('.feature-card, .pricing-card, .process-step').forEach(el => {
+        // Animate stat numbers with counter effect
+        function animateStatNumber(element) {
+            const text = element.textContent;
+            const number = parseInt(text.replace(/\D/g, ''));
+            const suffix = text.replace(/[0-9]/g, '');
+            
+            if (!isNaN(number)) {
+                let current = 0;
+                const increment = number / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= number) {
+                        current = number;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current) + suffix;
+                }, 20);
+            }
+        }
+
+        // Observe all feature cards and stat cards
+        document.querySelectorAll('.feature-card, .pricing-card, .process-step, .stat-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(20px)';
             el.style.transition = 'all 0.6s ease-out';
