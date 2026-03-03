@@ -388,11 +388,143 @@
             display: none;
         }
         
+        /* Step progress bar */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            padding: 20px 20px 0;
+            background: white;
+        }
+        .progress-step {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #aaa;
+            font-weight: 600;
+        }
+        .progress-step.active {
+            color: var(--primary-color);
+        }
+        .progress-step.completed {
+            color: #10b981;
+        }
+        .progress-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin-right: 6px;
+        }
+        .progress-step.active .progress-dot {
+            background: var(--primary-color);
+        }
+        .progress-step.completed .progress-dot {
+            background: #10b981;
+        }
+        .progress-line {
+            width: 40px;
+            height: 3px;
+            background: #e5e7eb;
+            margin: 0 8px;
+            align-self: center;
+        }
+        .progress-step.completed + .progress-line,
+        .progress-line.done {
+            background: #10b981;
+        }
+
+        /* Helper text under fields */
+        .field-help {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+            display: block;
+        }
+
         @media (max-width: 600px) {
+            .header { padding: 24px 16px; }
             .header h1 { font-size: 20px; }
             .header h2 { font-size: 16px; }
-            .form-container { padding: 20px 15px; }
-            .form-row { grid-template-columns: 1fr; }
+            .form-container { padding: 20px 16px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+
+            /* Bigger touch targets */
+            input, select, textarea {
+                padding: 14px 16px;
+                font-size: 17px;
+                border-radius: 12px;
+                min-height: 52px;
+            }
+
+            label {
+                font-size: 15px;
+                margin-bottom: 6px;
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin: 30px 0 16px 0;
+            }
+
+            /* Legal text: left-align, not justified */
+            .legal-text {
+                text-align: left;
+                font-size: 13px;
+                line-height: 1.7;
+            }
+
+            /* Bigger signature pad */
+            #signature-pad {
+                height: 250px;
+            }
+
+            /* Bigger checkbox */
+            .checkbox-container {
+                padding: 16px;
+            }
+            .checkbox-container input[type="checkbox"] {
+                min-width: 24px;
+                min-height: 24px;
+                transform: scale(1.5);
+                margin-right: 14px;
+                margin-top: 2px;
+            }
+            .checkbox-container span {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            /* Bigger submit button */
+            .btn-submit {
+                font-size: 20px;
+                padding: 18px;
+                border-radius: 14px;
+            }
+
+            .btn-clear {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            /* Progress bar mobile */
+            .progress-step {
+                font-size: 11px;
+            }
+            .progress-dot {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            .progress-line {
+                width: 24px;
+            }
         }
     </style>
 </head>
@@ -407,6 +539,24 @@
             <div id="agencyContact" class="agency-contact"></div>
         </div>
         
+        <!-- Step Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-step active" id="step1">
+                <div class="progress-dot">1</div>
+                Policy
+            </div>
+            <div class="progress-line" id="line1"></div>
+            <div class="progress-step" id="step2">
+                <div class="progress-dot">2</div>
+                Your Info
+            </div>
+            <div class="progress-line" id="line2"></div>
+            <div class="progress-step" id="step3">
+                <div class="progress-dot">3</div>
+                Sign
+            </div>
+        </div>
+
         <form id="noLossForm" class="form-container">
             <!-- Hidden fields for agency/agent info -->
             <input type="hidden" id="hiddenAgencyName" name="agencyName">
@@ -415,9 +565,10 @@
             <input type="hidden" id="hiddenAgencyPhone" name="agencyPhone">
             <input type="hidden" id="hiddenAgentName" name="agentName">
             <input type="hidden" id="hiddenAgentEmail" name="agentEmail">
-            
+
             <!-- Policy Information -->
-            <h3 class="section-title">Policy Information</h3>
+            <h3 class="section-title">&#x1F4CB; Policy Information</h3>
+            <p class="field-help" style="margin-top: -10px; margin-bottom: 16px; font-size: 14px; color: #666;">Fill in details about your insurance policy below.</p>
             
             <div class="form-row">
                 <div class="form-group">
@@ -442,7 +593,7 @@
                 
                 <div class="form-group">
                     <label for="policyNumber">Policy Number<span class="required">*</span></label>
-                    <input type="text" id="policyNumber" name="policyNumber" required>
+                    <input type="text" id="policyNumber" name="policyNumber" required placeholder="e.g. POL-123456">
                 </div>
             </div>
             
@@ -485,17 +636,18 @@
             </div>
             
             <!-- Insured Information -->
-            <h3 class="section-title">Insured Information</h3>
+            <h3 class="section-title">&#x1F464; Your Information</h3>
+            <p class="field-help" style="margin-top: -10px; margin-bottom: 16px; font-size: 14px; color: #666;">Enter the name and address of the person on the policy.</p>
             
             <div class="form-group">
-                <label for="insuredName">Insured Name (Full Name)<span class="required">*</span></label>
-                <input type="text" id="insuredName" name="insuredName" required>
+                <label for="insuredName">Your Full Name<span class="required">*</span></label>
+                <input type="text" id="insuredName" name="insuredName" required placeholder="e.g. John Smith">
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email">
+                    <input type="email" id="email" name="email" placeholder="your@email.com">
                 </div>
                 
                 <div class="form-group">
@@ -540,7 +692,7 @@
             
             <div class="form-group">
                 <label for="zipCode">ZIP Code<span class="required">*</span></label>
-                <input type="text" id="zipCode" name="zipCode" maxlength="5" pattern="[0-9]{5}" required>
+                <input type="text" id="zipCode" name="zipCode" maxlength="5" pattern="[0-9]{5}" required placeholder="27215">
             </div>
             
             <!-- Statement of No Loss -->
@@ -548,41 +700,42 @@
                 <h3>Statement of No Loss</h3>
                 
                 <p class="legal-text">
-                    I, <span id="customerNameDisplay" style="font-weight: bold;">[Customer Name]</span>, state that neither I nor any other person covered by this policy has had a claim or loss or been involved in an accident
-                    since the cancellation or expiration of the policy (otherwise known as the "no loss period") wherein this policy, including any and all
-                    coverages endorsed upon or made part of the policy may apply.
-                    In addition, if this reinstatement is for a personal or commercial auto, motorcycle, or RV policy, I certify that I have disclosed the current
-                    garaging location and use of all insured vehicles including if any such vehicle is used to deliver food or goods, to transport people for
-                    compensation, or for any other business purpose. I have also disclosed household members who are age 14 or older, and all persons who
-                    regularly drive any vehicle insured under this policy.
-                    I understand that this insurance company is relying solely upon this Statement of No Loss all of which is material, as an inducement to
-                    reinstate my policy with no lapse in coverage. I further understand that if a claim, loss, or accident has occurred during the no loss period, or
-                    if I failed to disclose the current garaging location and primary use of all vehicles insured under this policy, all persons who regularly drive
-                    these vehicles, and all members of my household who are age 14 or older, the reinstatement is null and void, my policy remains cancelled
-                    and no insurance coverage shall be provided.
-                    I agree that if my check or other payment for this reinstatement is not honored for any reason, the reinstatement is null and void and no
-                    coverage shall exist under this policy. I agree to pay a reinstatement fee and late fee (if applicable) in addition to the premium required to
-                    reinstate my policy. My payment will be applied first to the reinstatement and late fee and the remainder to the premium.
-                    It is a crime to knowingly provide false, incomplete, or misleading information to an insurance company for the purpose of defrauding the
-                    company. Penalties include imprisonment, fines, and denial of insurance benefits.
+                    I, <span id="customerNameDisplay" style="font-weight: bold;">[Customer Name]</span>, state that neither I nor any other person covered by this policy has had a claim or loss or been involved in an accident since the cancellation or expiration of the policy (otherwise known as the "no loss period") wherein this policy, including any and all coverages endorsed upon or made part of the policy may apply.
+                </p>
+
+                <p class="legal-text">
+                    In addition, if this reinstatement is for a personal or commercial auto, motorcycle, or RV policy, I certify that I have disclosed the current garaging location and use of all insured vehicles including if any such vehicle is used to deliver food or goods, to transport people for compensation, or for any other business purpose. I have also disclosed household members who are age 14 or older, and all persons who regularly drive any vehicle insured under this policy.
+                </p>
+
+                <p class="legal-text">
+                    I understand that this insurance company is relying solely upon this Statement of No Loss, all of which is material, as an inducement to reinstate my policy with no lapse in coverage. I further understand that if a claim, loss, or accident has occurred during the no loss period, or if I failed to disclose the current garaging location and primary use of all vehicles insured under this policy, all persons who regularly drive these vehicles, and all members of my household who are age 14 or older, the reinstatement is null and void, my policy remains cancelled and no insurance coverage shall be provided.
+                </p>
+
+                <p class="legal-text">
+                    I agree that if my check or other payment for this reinstatement is not honored for any reason, the reinstatement is null and void and no coverage shall exist under this policy. I agree to pay a reinstatement fee and late fee (if applicable) in addition to the premium required to reinstate my policy. My payment will be applied first to the reinstatement and late fee and the remainder to the premium.
+                </p>
+
+                <p class="legal-text warning">
+                    &#x26A0;&#xFE0F; It is a crime to knowingly provide false, incomplete, or misleading information to an insurance company for the purpose of defrauding the company. Penalties include imprisonment, fines, and denial of insurance benefits.
                 </p>
             </div>
             
             <div class="checkbox-container">
                 <label>
                     <input type="checkbox" id="noLossConfirmation" name="noLossConfirmation" required>
-                    <span>I have read, understand, and agree to all the statements, terms, and conditions outlined above in the Statement of No Loss. I confirm that NO LOSS, damage, or claim has occurred during the lapse period.</span>
+                    <span>&#x2705; I have read and agree to the Statement of No Loss above. I confirm that <strong>NO accidents, claims, or losses</strong> occurred during the lapse period.</span>
                 </label>
             </div>
             
             <!-- Electronic Signature -->
-            <h3 class="section-title">Electronic Signature</h3>
-            
+            <h3 class="section-title">&#x270D;&#xFE0F; Sign Your Name</h3>
+            <p class="field-help" style="margin-top: -10px; margin-bottom: 16px; font-size: 14px; color: #666;">Use your finger to sign in the box below. Tap "Clear" to start over if needed.</p>
+
             <div class="form-group">
-                <label>Please sign below using your mouse or finger<span class="required">*</span></label>
+                <label>Sign here with your finger or mouse<span class="required">*</span></label>
                 <canvas id="signature-pad"></canvas>
                 <div class="signature-buttons">
-                    <button type="button" class="btn btn-clear" onclick="clearSignature()">Clear Signature</button>
+                    <button type="button" class="btn btn-clear" onclick="clearSignature()">&#x1F5D1; Clear &amp; Redo</button>
                 </div>
             </div>
             
@@ -605,7 +758,7 @@
             </div>
             
             <button type="submit" class="btn btn-submit" id="submitBtn">
-                Submit Statement of No Loss
+                &#x1F4E8; Submit Statement of No Loss
             </button>
         </form>
         
@@ -982,6 +1135,44 @@
             }
         });
         
+        // Progress bar step tracking
+        function updateProgress(step) {
+            const steps = [
+                document.getElementById('step1'),
+                document.getElementById('step2'),
+                document.getElementById('step3')
+            ];
+            const lines = [
+                document.getElementById('line1'),
+                document.getElementById('line2')
+            ];
+            steps.forEach((s, i) => {
+                s.classList.remove('active', 'completed');
+                if (i + 1 < step) s.classList.add('completed');
+                else if (i + 1 === step) s.classList.add('active');
+            });
+            lines.forEach((l, i) => {
+                l.classList.toggle('done', i + 1 < step);
+            });
+        }
+
+        // Watch form sections to auto-update progress
+        const policyFields = ['insuranceCompany', 'policyNumber', 'policyType', 'cancellationDate', 'reinstatementDate'];
+        const infoFields = ['insuredName', 'phone', 'propertyAddress', 'city', 'state', 'zipCode'];
+
+        function checkProgress() {
+            const policyDone = policyFields.every(id => document.getElementById(id).value.trim() !== '');
+            const infoDone = infoFields.every(id => document.getElementById(id).value.trim() !== '');
+            if (policyDone && infoDone) updateProgress(3);
+            else if (policyDone) updateProgress(2);
+            else updateProgress(1);
+        }
+
+        [...policyFields, ...infoFields].forEach(id => {
+            document.getElementById(id).addEventListener('change', checkProgress);
+            document.getElementById(id).addEventListener('input', checkProgress);
+        });
+
         // Auto-format phone number
         document.getElementById('phone').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
