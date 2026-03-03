@@ -987,6 +987,9 @@
             
             // Pre-fetch IP address
             window.userIPAddress = await getIPAddress();
+
+            // Update progress bar after pre-fill
+            if (typeof checkProgress === 'function') checkProgress();
         });
         
         // Update customer name in the legal text
